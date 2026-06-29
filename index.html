@@ -40,7 +40,22 @@
   .modetoggle button.active{border-color:var(--state); color:var(--state);}
   .modetoggle button.on{border-color:var(--orange); color:var(--orange);}
 
-  /* ===== AMBIENT BLOOM (new) ===== */
+  /* ===== CLASSIFIED FILE FRAMING (new) ===== */
+  #watermark{position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.025; overflow:hidden;
+    display:flex; flex-wrap:wrap; transform:rotate(-18deg) scale(1.4); font-family:'Rajdhani',sans-serif; font-weight:700;
+    font-size:34px; letter-spacing:6px; color:var(--text); line-height:90px; white-space:nowrap;}
+
+  .file-tag{font-size:9px; color:var(--dim); letter-spacing:2px; opacity:0.7; margin-right:6px;}
+
+  .stamp{display:inline-block; font-family:'Rajdhani',sans-serif; font-weight:700; letter-spacing:2.5px; font-size:13px;
+    border:2px solid currentColor; border-radius:4px; padding:4px 12px; transform:rotate(-4deg); text-transform:uppercase;
+    position:relative; opacity:0.92;}
+  .stamp::after{content:''; position:absolute; inset:-3px; border:1px solid currentColor; border-radius:6px; opacity:0.4;}
+  .tag-inferred{display:inline-block; font-size:8.5px; letter-spacing:1px; color:var(--purple); border:1px solid var(--purple);
+    border-radius:3px; padding:1px 5px; margin-left:6px; opacity:0.8; vertical-align:middle; text-transform:uppercase;}
+
+  .typing-cursor{display:inline-block; width:7px; height:13px; background:var(--state); margin-left:2px; animation:blink 0.9s step-end infinite; vertical-align:middle;}
+  @keyframes blink{50%{opacity:0;}}
   #ambientGlow{position:fixed; top:-25%; left:50%; transform:translateX(-50%); width:min(900px,160vw); height:min(900px,160vw);
     border-radius:50%; background:radial-gradient(circle, var(--state) 0%, transparent 62%); filter:blur(70px);
     opacity:0.3; z-index:0; transition:background 1.2s ease, opacity 1.2s ease; animation:ambientbreathe 6s ease-in-out infinite;}
@@ -156,6 +171,7 @@
 </head>
 <body>
 
+<div id="watermark"></div>
 <div id="ambientGlow"></div>
 <div id="particles"></div>
 
@@ -212,8 +228,8 @@
     <div class="pressure-meta" id="pressureMeta">reading the market...</div>
 
     <div class="hidden-story">
-      <div class="eyebrow">WHAT'S HAPPENING BENEATH THE CHART</div>
-      <div id="storyText">Pulling live data — the picture will form in a few seconds.</div>
+      <div class="eyebrow"><span class="file-tag">FILE 00 —</span>WHAT'S HAPPENING BENEATH THE CHART</div>
+      <span id="storyText">Decrypting live data feed</span><span class="typing-cursor" id="storyCursor"></span>
     </div>
   </div>
 
@@ -238,9 +254,9 @@
   <div id="fullView">
 
     <!-- PERSONALITIES -->
-    <div class="section-title">WHO'S MOVING THE MARKET</div>
+    <div class="section-title"><span class="file-tag">FILE 01 —</span>WHO'S MOVING THE MARKET</div>
     <div class="personas">
-      <div class="persona" style="border-left-color:var(--purple); box-shadow:0 0 18px -8px var(--purple);"><div class="persona-head"><span style="font-size:16px;">🐋</span><div class="persona-name" style="color:var(--purple);">WHALES</div></div>
+      <div class="persona" style="border-left-color:var(--purple); box-shadow:0 0 18px -8px var(--purple);"><div class="persona-head"><span style="font-size:16px;">🐋</span><div class="persona-name" style="color:var(--purple);">WHALES</div><span class="tag-inferred">inferred</span></div>
         <div class="persona-line" id="pWhales">Reading size...</div><div class="persona-stat" id="pWhalesStat">--</div></div>
       <div class="persona" style="border-left-color:var(--orange); box-shadow:0 0 18px -8px var(--orange);"><div class="persona-head"><span style="font-size:16px;">👥</span><div class="persona-name" style="color:var(--orange);">RETAIL</div></div>
         <div class="persona-line" id="pRetail">Reading crowd...</div><div class="persona-stat" id="pRetailStat">--</div></div>
@@ -248,7 +264,7 @@
         <div class="persona-line" id="pLeverage">Reading exposure...</div><div class="persona-stat" id="pLeverageStat">--</div></div>
       <div class="persona" style="border-left-color:var(--teal); box-shadow:0 0 18px -8px var(--teal);"><div class="persona-head"><span style="font-size:16px;">💧</span><div class="persona-name" style="color:var(--teal);">SPOT BUYERS</div></div>
         <div class="persona-line" id="pSpot">Reading demand...</div><div class="persona-stat" id="pSpotStat">--</div></div>
-      <div class="persona" style="border-left-color:var(--blue); box-shadow:0 0 18px -8px var(--blue);"><div class="persona-head"><span style="font-size:16px;">🏦</span><div class="persona-name" style="color:var(--blue);">MARKET MAKERS</div></div>
+      <div class="persona" style="border-left-color:var(--blue); box-shadow:0 0 18px -8px var(--blue);"><div class="persona-head"><span style="font-size:16px;">🏦</span><div class="persona-name" style="color:var(--blue);">MARKET MAKERS</div><span class="tag-inferred">inferred</span></div>
         <div class="persona-line" id="pMM">Reading flow...</div><div class="persona-stat" id="pMMStat">--</div></div>
       <div class="persona" style="border-left-color:var(--state); box-shadow:0 0 18px -8px var(--state);"><div class="persona-head"><span style="font-size:16px;">🌀</span><div class="persona-name" style="color:var(--state);">LIQUIDITY</div></div>
         <div class="persona-line" id="pLiq">Reading gravity...</div><div class="persona-stat" id="pLiqStat">--</div></div>
@@ -262,13 +278,13 @@
 
     <!-- WHAT IS HIDDEN -->
     <div class="section">
-      <div class="section-title">WHAT IS HIDDEN</div>
+      <div class="section-title"><span class="file-tag">FILE 03 —</span>WHAT IS HIDDEN</div>
       <div id="hiddenList"><div class="hidden-clean">Scanning...</div></div>
     </div>
 
     <!-- TIMELINE -->
     <div class="section">
-      <div class="section-title">LAST FEW HOURS</div>
+      <div class="section-title"><span class="file-tag">FILE 04 —</span>LAST FEW HOURS</div>
       <div class="timeline-box">
         <svg id="timelineSvg" viewBox="0 0 300 70" width="100%" height="70" preserveAspectRatio="none"></svg>
         <div class="timeline-legend">
@@ -281,9 +297,9 @@
 
     <!-- EVIDENCE QUALITY -->
     <div class="section">
-      <div class="section-title">EVIDENCE QUALITY</div>
+      <div class="section-title"><span class="file-tag">FILE 05 —</span>EVIDENCE QUALITY</div>
       <div class="evidence-box">
-        <div class="evidence-badge" id="evidenceBadge">--</div>
+        <div id="evidenceStamp" class="stamp" style="color:var(--dim); border-color:var(--dim);">CALIBRATING</div>
         <div class="evidence-note" id="evidenceNote">Calibrating...</div>
         <div class="idk" id="idkLine"></div>
       </div>
@@ -291,7 +307,7 @@
 
     <!-- TRACK RECORD -->
     <div class="section track-record">
-      <div class="section-title">TRACK RECORD <span style="color:var(--dim); font-size:9px;">(saved on this device only)</span></div>
+      <div class="section-title"><span class="file-tag">FILE 06 —</span>TRACK RECORD <span style="color:var(--dim); font-size:9px;">(saved on this device only)</span></div>
       <div class="timeline-box">
         <div style="font-size:12px;">Accuracy, last 30 signals: <b id="accuracyNum" style="font-family:'Rajdhani',sans-serif;">--</b></div>
         <div id="predList"></div>
@@ -331,6 +347,12 @@
 
   function beep(freq=880,dur=0.15){ try{ const ctx=new (window.AudioContext||window.webkitAudioContext)(); const o=ctx.createOscillator(); const g=ctx.createGain();
     o.frequency.value=freq; o.type='sine'; o.connect(g); g.connect(ctx.destination); g.gain.setValueAtTime(0.08, ctx.currentTime); o.start(); o.stop(ctx.currentTime+dur); }catch(e){} }
+
+  // watermark fill
+  (function fillWatermark(){
+    const wm = $('watermark');
+    wm.innerHTML = Array(40).fill('DECLASSIFIED &nbsp;&nbsp; HIDDEN XRP &nbsp;&nbsp; ').join('');
+  })();
 
   // particles
   (function initParticles(){
@@ -421,6 +443,21 @@
   function stdev(arr){ if(arr.length===0) return 0; const m=arr.reduce((a,b)=>a+b,0)/arr.length; return Math.sqrt(arr.reduce((s,v)=>s+(v-m)*(v-m),0)/arr.length); }
   function dailyFundingAvg(daysBack){ const now=Date.now(); const dayMs=86400000; const dayStart=Math.floor(now/dayMs)*dayMs-daysBack*dayMs; const dayEnd=dayStart+dayMs;
     const inRange=fundingHistAll.filter(f=>f.t>=dayStart && f.t<dayEnd); if(inRange.length===0) return null; return inRange.reduce((s,f)=>s+f.rate,0)/inRange.length; }
+
+  let lastStoryText = '';
+  let typingTimer = null;
+  function setStoryText(newText){
+    if(newText === lastStoryText) return;
+    lastStoryText = newText;
+    if(typingTimer) clearInterval(typingTimer);
+    const el = $('storyText'); el.textContent='';
+    let i = 0;
+    typingTimer = setInterval(()=>{
+      el.textContent = newText.slice(0, i);
+      i++;
+      if(i > newText.length) clearInterval(typingTimer);
+    }, 14);
+  }
 
   function setStateColor(hex){ document.documentElement.style.setProperty('--state', hex); }
 
@@ -575,7 +612,7 @@
     if(divergenceActive) closing = `This suggests traders are becoming one-sided without genuine buying behind it — pressure is building beneath a quiet chart.`;
     else if(pressure>65) closing = `One side of the market looks genuinely stretched here.`;
     else closing = `Nothing especially hidden right now — the surface and the structure underneath broadly agree.`;
-    $('storyText').textContent = `${priceClause} ${leverageClause}. ${spotClause}, ${fundClause}. ${closing}`;
+    setStoryText(`${priceClause} ${leverageClause}. ${spotClause}, ${fundClause}. ${closing}`);
 
     // personalities
     $('pWhales').textContent = Math.abs(oiTodayPct)>2 ? 'Unusual size moving — open interest just shifted fast.' : oi30pct>80 ? 'Quiet on the surface, but positioning sits near a 30-day high.' : 'No unusual size detected right now.';
@@ -599,7 +636,7 @@
       {label:'Historical similarity found', on: histResult.similarity>=50},
       {label:'Consensus strong', on: consensusScore>=60}
     ];
-    $('whyTitle').textContent = pressure>40 ? 'WHY PRESSURE IS BUILDING' : 'WHY THINGS LOOK CALM';
+    $('whyTitle').innerHTML = `<span class="file-tag">FILE 02 —</span>` + (pressure>40 ? 'WHY PRESSURE IS BUILDING' : 'WHY THINGS LOOK CALM');
     $('whyList').innerHTML = whyChecks.map(c=>`<div class="why-item"><div class="why-check ${c.on?'on':'off'}">${c.on?'✓':'—'}</div><span>${c.label}</span></div>`).join('');
 
     // what is hidden (contradictions)
@@ -619,7 +656,9 @@
     // evidence quality
     const reliabLabel = reliab>=80?'Excellent':reliab>=60?'Good':reliab>=40?'Average':'Poor';
     const reliabColorVar = reliab>=80?'var(--teal)':reliab>=60?'var(--blue)':reliab>=40?'var(--orange)':'var(--red)';
-    $('evidenceBadge').textContent = `${reliabLabel} — ${reliab}%`; $('evidenceBadge').style.color = reliabColorVar;
+    const stampText = reliab>=80?'CONFIRMED':reliab>=60?'LIKELY ACCURATE':reliab>=40?'UNVERIFIED':'INSUFFICIENT EVIDENCE';
+    $('evidenceStamp').textContent = `${stampText} · ${reliab}%`;
+    $('evidenceStamp').style.color = reliabColorVar; $('evidenceStamp').style.borderColor = reliabColorVar;
     $('evidenceNote').textContent = reliab>=60
       ? `The available evidence is agreeing unusually well today.`
       : reliab>=40 ? `The evidence is mixed — worth a little caution.`
