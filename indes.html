@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>LEVERAGE TRAP DETECTOR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#060a0c;
+    --panel:#0c1316;
+    --panel-2:#0f1a1d;
+    --line:#152226;
+    --text:#d8f5f0;
+    --dim:#5a7d78;
+    --cyan:#00e5d4;
+    --amber:#ff8c2b;
+    --red:#ff3b3b;
+    --green:#3ddc97;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{background:var(--bg); color:var(--text); font-family:'Share Tech Mono', monospace; overflow-x:hidden;}
+  .wrap{max-width:760px; margin:0 auto; padding:14px 16px 60px;}
+
+  /* ambient grain/scan */
+  body::before{
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:1;
+    background:repeating-linear-gradient(0deg, rgba(0,229,212,0.018) 0px, rgba(0,229,212,0.018) 1px, transparent 1px, transparent 3px);
+  }
+
+  header{display:flex; justify-content:space-between; align-items:center; padding:6px 2px 14px; border-bottom:1px solid var(--line);}
+  .titleblock h1{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:19px; letter-spacing:1.5px; color:var(--text);}
+  .titleblock .sub{font-size:10px; color:var(--dim); letter-spacing:1px; margin-top:2px;}
+  .price{text-align:right;}
+  .price .gbp{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:20px; color:var(--cyan);}
+  .price .fund-timer{font-size:10px; color:var(--dim); margin-top:2px;}
+
+  .modetoggle{display:flex; gap:6px; margin:14px 0 6px; justify-content:flex-end;}
+  .modetoggle button{
+    background:transparent; border:1px solid var(--line); color:var(--dim);
+    font-family:'Rajdhani',sans-serif; font-size:11px; letter-spacing:1px; font-weight:600;
+    padding:5px 12px; border-radius:3px; cursor:pointer; transition:.15s;
+  }
+  .modetoggle button.active{border-color:var(--cyan); color:var(--cyan);}
+
+  /* THE COIL — signature element */
+  .coil-stage{
+    position:relative; height:230px; margin:18px 0 8px; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(ellipse at center, rgba(0,229,212,0.05) 0%, transparent 70%);
+  }
+  svg#coil{ filter:drop-shadow(0 0 6px var(--coilglow, rgba(0,229,212,0.35))); transition: filter 1.2s ease; }
+  .coil-path{ fill:none; stroke:var(--coilcolor, #00e5d4); stroke-width:3; stroke-linecap:round; transition: stroke 1.2s ease, d 1.2s cubic-bezier(.4,0,.2,1); }
+  .coil-label{position:absolute; text-align:center; pointer-events:none;}
+  .coil-label .tension-num{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:46px; line-height:1; transition:color 1s ease;}
+  .coil-label .tension-word{font-family:'Rajdhani',sans-serif; font-weight:600; font-size:13px; letter-spacing:2px; margin-top:2px; color:var(--dim);}
+
+  .verdict-strip{
+    text-align:center; font-family:'Rajdhani',sans-serif; font-weight:600; font-size:13px;
+    letter-spacing:.5px; padding:10px 14px; border-radius:4px; margin-bottom:18px;
+    background:var(--panel); border:1px solid var(--line); color:var(--text); line-height:1.5;
+  }
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;}
+  @media(max-width:520px){ .grid2{grid-template-columns:1fr;} }
+
+  .panel{background:var(--panel); border:1px solid var(--line); border-radius:5px; padding:14px;}
+  .panel h2{font-family:'Rajdhani',sans-serif; font-size:12px; letter-spacing:1.5px; color:var(--dim); font-weight:600; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;}
+  .panel h2 .badge{font-size:10px; padding:2px 7px; border-radius:10px; border:1px solid var(--line);}
+  .bignum{font-family:'Rajdhani',sans-serif; font-size:30px; font-weight:700; color:var(--text); line-height:1;}
+  .label-small{font-size:10px; color:var(--dim); margin-top:4px; letter-spacing:.5px;}
+
+  .bar-row{display:flex; align-items:center; gap:8px; margin-top:8px;}
+  .bar-track{flex:1; height:7px; background:var(--panel-2); border-radius:4px; overflow:hidden; position:relative;}
+  .bar-fill{height:100%; border-radius:4px; transition:width 1s ease, background 1s ease;}
+  .bar-val{font-size:11px; width:50px; text-align:right; color:var(--dim);}
+
+  .sowhat{margin-top:12px; padding-top:10px; border-top:1px dashed var(--line); font-size:11px; color:var(--dim); line-height:1.5;}
+  .sowhat b{color:var(--cyan); font-weight:400;}
+
+  .zones{margin-top:6px;}
+  .zone-row{display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid var(--line);}
+  .zone-row:last-child{border-bottom:none;}
+  .zone-price{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:14px; width:78px;}
+  .zone-bar-track{flex:1; height:14px; background:var(--panel-2); border-radius:3px; overflow:hidden;}
+  .zone-bar-fill{height:100%; border-radius:3px;}
+  .zone-dist{font-size:10px; color:var(--dim); width:54px; text-align:right;}
+
+  .spark{margin-top:6px;}
+
+  footer{text-align:center; font-size:10px; color:var(--dim); margin-top:20px; letter-spacing:.5px; line-height:1.6;}
+  footer a{color:var(--dim);}
+
+  .pulse{animation:pulseAnim 1.6s ease-in-out infinite;}
+  @keyframes pulseAnim{0%,100%{opacity:1;}50%{opacity:.45;}}
+
+  .loading-overlay{
+    position:fixed; inset:0; background:var(--bg); z-index:50;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+    transition:opacity .5s ease;
+  }
+  .loading-overlay .spinner{width:34px;height:34px;border:2px solid var(--line); border-top-color:var(--cyan); border-radius:50%; animation:spin 1s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .loading-overlay span{font-size:11px; color:var(--dim); letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <span id="loadingText">CONNECTING TO FUTURES FEED...</span>
+</div>
+
+<div class="wrap">
+  <header>
+    <div class="titleblock">
+      <h1>LEVERAGE TRAP DETECTOR</h1>
+      <div class="sub">XRP PERPETUALS · BINANCE / BYBIT</div>
+    </div>
+    <div class="price">
+      <div class="gbp" id="priceGbp">£-.----</div>
+      <div class="fund-timer" id="fundTimer">next funding --:--</div>
+    </div>
+  </header>
+
+  <div class="modetoggle">
+    <button id="btnFull" class="active">FULL</button>
+    <button id="btnJon">JON MODE</button>
+  </div>
+
+  <div class="coil-stage">
+    <svg id="coil" width="180" height="200" viewBox="0 0 180 200">
+      <path id="coilPath" class="coil-path" d=""></path>
+    </svg>
+    <div class="coil-label">
+      <div class="tension-num" id="tensionNum" style="color:var(--cyan)">--</div>
+      <div class="tension-word" id="tensionWord">CALIBRATING</div>
+    </div>
+  </div>
+
+  <div class="verdict-strip" id="verdictStrip">Reading the spring — give it a few seconds of live data.</div>
+
+  <div id="fullView">
+    <div class="grid2">
+      <div class="panel">
+        <h2>FUNDING SKEW <span class="badge" id="fundBadge" style="color:var(--dim); border-color:var(--line)">--</span></h2>
+        <div class="bignum" id="fundRateNum">--%</div>
+        <div class="label-small">annualised funding rate · Binance</div>
+        <div class="bar-row">
+          <div class="bar-track"><div class="bar-fill" id="fundBar" style="width:50%; background:var(--dim);"></div></div>
+        </div>
+        <div class="label-small" id="fundCompare">Bybit cross-check: --</div>
+        <div class="sowhat">Positive = <b>longs paying shorts</b> (long-heavy). Negative = <b>shorts paying longs</b> (short-heavy). Extreme readings mean one side is crowded and exposed.</div>
+      </div>
+
+      <div class="panel">
+        <h2>OPEN INTEREST BUILD <span class="badge" id="oiBadge" style="color:var(--dim); border-color:var(--line)">--</span></h2>
+        <div class="bignum" id="oiNum">--</div>
+        <div class="label-small">XRP notional open interest, Binance</div>
+        <div class="bar-row">
+          <div class="bar-track"><div class="bar-fill" id="oiBar" style="width:0%; background:var(--cyan);"></div></div>
+          <div class="bar-val" id="oiChange">--</div>
+        </div>
+        <div class="sowhat" id="oiSoWhat">Rising OI + flat price = leverage stacking with nowhere to go. That's the setup before a flush, not after.</div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:12px;">
+      <h2>LIQUIDATION MAGNET ZONES <span class="badge" style="color:var(--dim); border-color:var(--line)">ESTIMATED</span></h2>
+      <div class="zones" id="zonesList"></div>
+      <div class="sowhat">Estimated from common 10x/20x/25x leverage tiers around the current crowd's likely entries. Not exact — exchanges don't publish real stop clusters. Treat as gravity, not gospel.</div>
+    </div>
+
+    <div class="panel">
+      <h2>FUNDING / PRICE DIVERGENCE</h2>
+      <div id="divergenceText" class="bignum" style="font-size:16px; line-height:1.4;">Building baseline...</div>
+      <div class="sowhat">This is the earliest tell — funding climbing while price goes nowhere means fuel is loading <b>before</b> any wick happens. Your absorption panel catches the move; this catches the setup.</div>
+    </div>
+  </div>
+
+  <div id="jonView" style="display:none;">
+    <div class="panel">
+      <h2>JON SCORE</h2>
+      <div class="bignum" id="jonBig" style="font-size:40px;">--</div>
+      <div class="label-small" id="jonSub">Calibrating...</div>
+    </div>
+  </div>
+
+  <footer>
+    LEVERAGE TRAP DETECTOR · session data only, resets on reload<br>
+    built by webzy87 &amp; Rose · companion to Signal Layer
+  </footer>
+</div>
+
+<script>
+(function(){
+  const SYMBOL = 'XRPUSDT';
+  let oiHistory = [];     // {t, oi, price}
+  let fundHistory = [];   // {t, rate}
+  let gbpRate = 0.79;     // fallback, refreshed from API
+  let lastPrice = null;
+
+  const $ = id => document.getElementById(id);
+
+  function fmtGbp(n){ return '£' + n.toFixed(4); }
+  function fmtPct(n){ return (n>=0?'+':'') + (n*100).toFixed(3) + '%'; }
+  function fmtNum(n){
+    if(n>1e9) return (n/1e9).toFixed(2)+'B';
+    if(n>1e6) return (n/1e6).toFixed(2)+'M';
+    if(n>1e3) return (n/1e3).toFixed(1)+'K';
+    return n.toFixed(0);
+  }
+
+  async function fetchGbpRate(){
+    try{
+      const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ripple&vs_currencies=gbp,usd');
+      const d = await r.json();
+      if(d.ripple && d.ripple.gbp && d.ripple.usd){
+        gbpRate = d.ripple.gbp / d.ripple.usd;
+      }
+    }catch(e){ /* keep fallback */ }
+  }
+
+  async function fetchBinance(){
+    const [premiumRes, oiRes] = await Promise.all([
+      fetch(`https://fapi.binance.com/fapi/v1/premiumIndex?symbol=${SYMBOL}`),
+      fetch(`https://fapi.binance.com/fapi/v1/openInterest?symbol=${SYMBOL}`)
+    ]);
+    const premium = await premiumRes.json();
+    const oi = await oiRes.json();
+    return {
+      markPrice: parseFloat(premium.markPrice),
+      fundingRate: parseFloat(premium.lastFundingRate),
+      nextFundingTime: premium.nextFundingTime,
+      openInterest: parseFloat(oi.openInterest)
+    };
+  }
+
+  async function fetchBybit(){
+    try{
+      const r = await fetch(`https://api.bybit.com/v5/market/tickers?category=linear&symbol=${SYMBOL}`);
+      const d = await r.json();
+      const t = d.result.list[0];
+      return { fundingRate: parseFloat(t.fundingRate) };
+    }catch(e){ return null; }
+  }
+
+  function tensionScore(fundRate, oiTrendPct, divergence){
+    // 0-100 composite
+    let score = 0;
+    score += Math.min(Math.abs(fundRate) * 100000, 45); // funding magnitude, capped
+    score += Math.min(Math.abs(oiTrendPct) * 2, 30);      // OI build speed
+    if(divergence === 'loading') score += 25;
+    return Math.min(Math.round(score), 100);
+  }
+
+  function setCoil(tension, direction){
+    // direction: 'long' | 'short' | 'neutral' -> color
+    const path = $('coilPath');
+    // compress amplitude as tension rises (tighter coil = more loaded)
+    const turns = 6;
+    const baseAmp = 55 - (tension*0.32); // tighter as tension increases
+    const h = 200, w=180, cx=90;
+    let d = `M ${cx} 6`;
+    const stepY = (h-12)/ (turns*2);
+    let dir = 1;
+    let y = 6;
+    for(let i=0;i<turns*2;i++){
+      const nextY = y + stepY;
+      const x = cx + dir*baseAmp;
+      d += ` Q ${x} ${y+stepY/2} ${cx} ${nextY}`;
+      y = nextY;
+      dir *= -1;
+    }
+    path.setAttribute('d', d);
+
+    let color = '#00e5d4';
+    if(direction==='long') color = tension>65 ? '#ff3b3b' : '#ff8c2b';
+    if(direction==='short') color = tension>65 ? '#ff3b3b' : '#3ddc97';
+    path.style.stroke = color;
+    document.getElementById('coil').style.setProperty('--coilglow', color+'66');
+    path.style.setProperty('--coilcolor', color);
+  }
+
+  function render(state){
+    $('loadingOverlay').style.display = 'none';
+    const { markPrice, fundingRate, nextFundingTime, openInterest, bybitFunding } = state;
+
+    // price
+    const gbpPrice = markPrice * gbpRate;
+    $('priceGbp').textContent = fmtGbp(gbpPrice);
+    const mins = Math.max(0, Math.round((nextFundingTime - Date.now())/60000));
+    $('fundTimer').textContent = `next funding ${Math.floor(mins/60)}h ${mins%60}m`;
+
+    // funding annualized (3x per day funding settlements -> *3*365)
+    const annualized = fundingRate * 3 * 365;
+    $('fundRateNum').textContent = fmtPct(annualized/100*100) ; // already annualized fraction
+    $('fundRateNum').textContent = (annualized*100).toFixed(2)+'% / yr';
+    const fundPct = Math.max(0, Math.min(100, 50 + (annualized*100)*5)); // map to bar
+    $('fundBar').style.width = fundPct+'%';
+    let fundColor = '#5a7d78', fundLabel='NEUTRAL';
+    if(annualized > 0.06){ fundColor='#ff8c2b'; fundLabel='LONG-HEAVY'; }
+    if(annualized > 0.15){ fundColor='#ff3b3b'; fundLabel='CROWDED LONG'; }
+    if(annualized < -0.06){ fundColor='#3ddc97'; fundLabel='SHORT-HEAVY'; }
+    if(annualized < -0.15){ fundColor='#ff3b3b'; fundLabel='CROWDED SHORT'; }
+    $('fundBar').style.background = fundColor;
+    $('fundBadge').textContent = fundLabel;
+    $('fundBadge').style.color = fundColor;
+    $('fundBadge').style.borderColor = fundColor;
+    if(bybitFunding !== null){
+      const agree = Math.sign(bybitFunding) === Math.sign(fundingRate);
+      $('fundCompare').textContent = `Bybit cross-check: ${agree?'agrees':'diverges'} (${(bybitFunding*100*3*365).toFixed(2)}%/yr)`;
+    }
+
+    // OI history
+    oiHistory.push({t: Date.now(), oi: openInterest, price: markPrice});
+    if(oiHistory.length > 60) oiHistory.shift();
+    let oiTrendPct = 0;
+    if(oiHistory.length >= 2){
+      const first = oiHistory[0].oi, last = oiHistory[oiHistory.length-1].oi;
+      oiTrendPct = first>0 ? ((last-first)/first)*100 : 0;
+    }
+    $('oiNum').textContent = fmtNum(openInterest)+' XRP';
+    const oiBarPct = Math.max(0, Math.min(100, 50 + oiTrendPct*4));
+    $('oiBar').style.width = oiBarPct+'%';
+    $('oiChange').textContent = (oiTrendPct>=0?'+':'')+oiTrendPct.toFixed(2)+'%';
+
+    let oiState='STABLE';
+    let priceMoved = false;
+    if(oiHistory.length>=5){
+      const priceFirst = oiHistory[0].price, priceLast = oiHistory[oiHistory.length-1].price;
+      priceMoved = Math.abs((priceLast-priceFirst)/priceFirst) > 0.003;
+    }
+    let divergence = 'none';
+    if(oiTrendPct > 1 && !priceMoved){ oiState='BUILDING — PRICE FLAT'; divergence='loading'; $('oiSoWhat').textContent='OI rising while price barely moves — leverage is stacking with no release valve yet. This is the loading phase.'; }
+    else if(oiTrendPct > 1 && priceMoved){ oiState='BUILDING WITH PRICE'; $('oiSoWhat').textContent='OI and price rising together — looks like fresh conviction, not necessarily a trap yet. Watch funding alongside this.'; }
+    else if(oiTrendPct < -1){ oiState='UNWINDING'; divergence='unwinding'; $('oiSoWhat').textContent='Open interest dropping — positions closing or getting liquidated. If this lines up with a funding flip, the cascade may already be underway.'; }
+    $('oiBadge').textContent = oiState;
+
+    // tension + coil
+    const tension = tensionScore(annualized, oiTrendPct, divergence);
+    const direction = annualized>0.02 ? 'long' : (annualized<-0.02 ? 'short' : 'neutral');
+    $('tensionNum').textContent = tension;
+    $('tensionNum').style.color = tension>65 ? '#ff3b3b' : (tension>35 ? '#ff8c2b' : '#00e5d4');
+    $('tensionWord').textContent = tension>65 ? 'LOADED SPRING' : (tension>35 ? 'TIGHTENING' : 'SLACK');
+    setCoil(tension, direction);
+
+    // verdict strip
+    let verdict = '';
+    if(tension>65){
+      verdict = direction==='long'
+        ? `Heavy long leverage stacked with funding paying ${(annualized*100).toFixed(1)}%/yr. A flush would hit longs hardest. Don't chase strength here.`
+        : direction==='short'
+        ? `Heavy short leverage stacked. A squeeze higher would hit shorts hardest. Don't chase weakness here.`
+        : `Tension is high but direction is unclear — both sides may be exposed. Reduce size either way.`;
+      $('verdictStrip').style.borderColor = '#ff3b3b';
+      $('verdictStrip').style.color = '#ffb3b3';
+    } else if(tension>35){
+      verdict = `Leverage building ${direction==='long'?'on the long side':direction==='short'?'on the short side':''}. Not dangerous yet — worth watching the next hour.`;
+      $('verdictStrip').style.borderColor = '#ff8c2b';
+      $('verdictStrip').style.color = '#ffd9b3';
+    } else {
+      verdict = `Market's clean. No crowded leverage on either side right now.`;
+      $('verdictStrip').style.borderColor = 'var(--line)';
+      $('verdictStrip').style.color = 'var(--text)';
+    }
+    $('verdictStrip').textContent = verdict;
+
+    // divergence text
+    if(divergence==='loading'){
+      $('divergenceText').textContent = '⚠ Funding climbing, price flat — fuel is loading.';
+      $('divergenceText').style.color = '#ff8c2b';
+    } else if(divergence==='unwinding'){
+      $('divergenceText').textContent = '⚡ Open interest unwinding — cascade may be in motion.';
+      $('divergenceText').style.color = '#ff3b3b';
+    } else {
+      $('divergenceText').textContent = 'No divergence detected. Funding and price moving in step.';
+      $('divergenceText').style.color = '#d8f5f0';
+    }
+
+    // liquidation zones (estimated)
+    renderZones(markPrice, direction, tension);
+
+    // Jon mode
+    $('jonBig').textContent = tension;
+    $('jonBig').style.color = tension>65 ? '#ff3b3b' : (tension>35 ? '#ff8c2b' : '#3ddc97');
+    $('jonSub').textContent = verdict;
+
+    lastPrice = markPrice;
+  }
+
+  function renderZones(price, direction, tension){
+    const leverages = [10, 20, 25];
+    const list = $('zonesList');
+    list.innerHTML = '';
+    leverages.forEach(lev=>{
+      const longLiq = price * (1 - 1/lev);
+      const shortLiq = price * (1 + 1/lev);
+      [
+        {p: longLiq, type:'LONG LIQ', lev},
+        {p: shortLiq, type:'SHORT LIQ', lev}
+      ].forEach(z=>{
+        const distPct = Math.abs((z.p-price)/price)*100;
+        const intensity = Math.max(8, 100 - distPct*12); // closer = more intense bar
+        const color = z.type==='LONG LIQ' ? '#ff8c2b' : '#3ddc97';
+        const row = document.createElement('div');
+        row.className = 'zone-row';
+        row.innerHTML = `
+          <div class="zone-price">${fmtGbp(z.p*gbpRate)}</div>
+          <div class="zone-bar-track"><div class="zone-bar-fill" style="width:${intensity}%; background:${color};"></div></div>
+          <div class="zone-dist">${distPct.toFixed(1)}% · ${lev}x</div>
+        `;
+        list.appendChild(row);
+      });
+    });
+  }
+
+  async function tick(){
+    try{
+      $('loadingText').textContent = 'PULLING FUNDING + OPEN INTEREST...';
+      const [bin, bybit] = await Promise.all([fetchBinance(), fetchBybit()]);
+      render({
+        markPrice: bin.markPrice,
+        fundingRate: bin.fundingRate,
+        nextFundingTime: bin.nextFundingTime,
+        openInterest: bin.openInterest,
+        bybitFunding: bybit ? bybit.fundingRate : null
+      });
+    }catch(e){
+      $('loadingText').textContent = 'FEED ERROR — RETRYING...';
+      $('loadingOverlay').style.display = 'flex';
+    }
+  }
+
+  $('btnFull').addEventListener('click', ()=>{
+    $('btnFull').classList.add('active'); $('btnJon').classList.remove('active');
+    $('fullView').style.display='block'; $('jonView').style.display='none';
+  });
+  $('btnJon').addEventListener('click', ()=>{
+    $('btnJon').classList.add('active'); $('btnFull').classList.remove('active');
+    $('jonView').style.display='block'; $('fullView').style.display='none';
+  });
+
+  fetchGbpRate();
+  setInterval(fetchGbpRate, 5*60*1000);
+  tick();
+  setInterval(tick, 15000);
+})();
+</script>
+</body>
+</html>
