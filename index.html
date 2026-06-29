@@ -10,7 +10,7 @@
 <style>
   :root{
     --bg:#060a0c; --panel:#0c1316; --panel-2:#0f1a1d; --line:#152226;
-    --text:#d8f5f0; --dim:#5a7d78; --cyan:#00e5d4; --amber:#ff8c2b; --red:#ff3b3b; --green:#3ddc97;
+    --text:#d8f5f0; --dim:#5a7d78; --cyan:#00e5d4; --amber:#ff8c2b; --red:#ff3b3b; --green:#3ddc97; --purple:#b07cff;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html,body{background:var(--bg); color:var(--text); font-family:'Share Tech Mono', monospace; overflow-x:hidden;}
@@ -25,14 +25,13 @@
   .price .gbp{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:19px; color:var(--cyan);}
   .price .fund-timer{font-size:10px; color:var(--dim); margin-top:2px;}
 
-  .modetoggle{display:flex; gap:6px; margin:14px 0 10px; justify-content:flex-end;}
+  .modetoggle{display:flex; gap:6px; margin:14px 0 10px; justify-content:flex-end; flex-wrap:wrap;}
   .modetoggle button, .alertbtn{background:transparent; border:1px solid var(--line); color:var(--dim);
     font-family:'Rajdhani',sans-serif; font-size:11px; letter-spacing:1px; font-weight:600;
     padding:5px 12px; border-radius:3px; cursor:pointer; transition:.15s;}
   .modetoggle button.active{border-color:var(--cyan); color:var(--cyan);}
   .alertbtn.on{border-color:var(--amber); color:var(--amber);}
 
-  /* HERO: Market Pressure */
   .hero{display:flex; align-items:center; gap:18px; background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:18px; margin-bottom:12px;}
   .coil-mini{flex-shrink:0;}
   .hero-main{flex:1;}
@@ -64,14 +63,42 @@
 
   .badge{font-size:10px; padding:2px 8px; border-radius:10px; border:1px solid var(--line); font-family:'Rajdhani',sans-serif; font-weight:600;}
   .bignote{font-size:12px; line-height:1.6; color:var(--text); margin-top:8px;}
-  .warn-box{border:1px solid var(--amber); background:rgba(255,140,43,0.08); border-radius:5px; padding:10px 12px; font-size:12px; color:#ffd9b3; margin-top:8px; display:none;}
-  .warn-box.show{display:block;}
+  .warn-box{border:1px solid var(--amber); background:rgba(255,140,43,0.08); border-radius:5px; padding:10px 12px; font-size:12px; color:#ffd9b3; margin-top:8px;}
 
   .zone-row{display:flex; align-items:center; gap:10px; padding:5px 0;}
   .zone-price{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:13px; width:74px;}
   .zone-bar-track{flex:1; height:10px; background:var(--panel-2); border-radius:3px; overflow:hidden;}
   .zone-bar-fill{height:100%; border-radius:3px;}
   .zone-dist{font-size:9px; color:var(--dim); width:46px; text-align:right;}
+
+  /* CONSENSUS */
+  .vote-grid{display:flex; flex-direction:column; gap:6px; margin-bottom:10px;}
+  .vote-row{display:flex; justify-content:space-between; align-items:center; padding:6px 8px; background:var(--panel-2); border-radius:4px;}
+  .vote-name{font-size:11px; color:var(--dim);}
+  .vote-chip{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; padding:2px 10px; border-radius:10px;}
+  .consensus-score{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:30px; margin-top:6px;}
+  .consensus-label{font-size:11px; letter-spacing:1px; color:var(--dim); margin-top:2px;}
+
+  /* CONTRADICTIONS */
+  .contra-item{border-left:3px solid var(--amber); background:rgba(255,140,43,0.06); border-radius:0 4px 4px 0; padding:8px 10px; margin-bottom:8px; font-size:12px; line-height:1.5;}
+  .contra-item b{color:#ffd9b3;}
+  .contra-clean{font-size:12px; color:var(--green);}
+
+  /* ENERGY */
+  .energy-bars{display:flex; gap:6px; margin-top:8px; height:60px; align-items:flex-end;}
+  .energy-col{flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;}
+  .energy-bar-out{width:100%; height:42px; background:var(--panel-2); border-radius:3px; display:flex; align-items:flex-end; overflow:hidden;}
+  .energy-bar-in{width:100%; border-radius:3px; transition:height 1s ease, background 1s ease;}
+  .energy-col-label{font-size:9px; color:var(--dim);}
+
+  /* RELIABILITY */
+  .reliab-badge{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:26px; padding:4px 14px; border-radius:5px; display:inline-block;}
+
+  /* LEARNING */
+  .pred-row{display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid var(--line); font-size:11px;}
+  .pred-row:last-child{border-bottom:none;}
+  .pred-outcome{font-family:'Rajdhani',sans-serif; font-weight:700; padding:2px 8px; border-radius:10px; font-size:10px;}
+  .reset-btn{background:transparent; border:1px solid var(--line); color:var(--dim); font-family:'Rajdhani',sans-serif; font-size:10px; padding:4px 10px; border-radius:3px; cursor:pointer; margin-top:8px;}
 
   footer{text-align:center; font-size:10px; color:var(--dim); margin-top:20px; letter-spacing:.5px; line-height:1.6;}
 
@@ -86,6 +113,7 @@
   .jon-line .k{color:var(--dim);}
   .jon-line .v{font-family:'Rajdhani',sans-serif; font-weight:700;}
   .jon-action{margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); font-size:13px; line-height:1.5;}
+  .jon-honesty{margin-top:10px; font-size:12px; color:var(--purple); font-style:italic;}
 </style>
 </head>
 <body>
@@ -113,7 +141,6 @@
     <button id="btnJon">JON MODE</button>
   </div>
 
-  <!-- HERO -->
   <div class="hero">
     <svg id="coil" width="100" height="120" viewBox="0 0 100 120" class="coil-mini">
       <path id="coilPath" fill="none" stroke="#00e5d4" stroke-width="3" stroke-linecap="round" d=""></path>
@@ -128,18 +155,50 @@
 
   <div id="fullView">
 
+    <!-- MARKET CONSENSUS (new) -->
+    <div class="panel">
+      <h2>MARKET CONSENSUS <span class="info-icon" data-tip="Each metric below casts a Bullish / Neutral / Bearish vote using a simple fixed rule (see each row). Consensus Score = how many votes agree with the majority direction, out of 7.">i</span><span class="tip-text"></span></h2>
+      <div class="vote-grid" id="voteGrid"></div>
+      <div class="consensus-score" id="consensusScore">--%</div>
+      <div class="consensus-label" id="consensusLabel">CALIBRATING</div>
+    </div>
+
+    <!-- CONTRADICTIONS (new) -->
+    <div class="panel">
+      <h2>CONTRADICTIONS <span class="info-icon" data-tip="Checks fixed combinations across the metrics above — the kind of thing that's easy to miss when you're only looking at one number at a time.">i</span><span class="tip-text"></span></h2>
+      <div id="contraList"><div class="contra-clean">Scanning...</div></div>
+    </div>
+
+    <!-- VOLATILITY ENERGY (new) -->
+    <div class="panel">
+      <h2>VOLATILITY ENERGY <span class="info-icon" data-tip="Not ATR. Measures how compressed (quiet/tight) funding, OI, price range and volume are right now versus their recent baseline. High = energy stored, expansion likely soon. Says nothing about direction.">i</span><span class="tip-text"></span></h2>
+      <div class="row"><span class="k">Energy</span><span class="v" id="energyNum">--%</span></div>
+      <div class="bignote" id="energyNote">--</div>
+      <div class="energy-bars">
+        <div class="energy-col"><div class="energy-bar-out"><div class="energy-bar-in" id="eBarFund" style="height:0%; background:var(--cyan);"></div></div><div class="energy-col-label">Funding</div></div>
+        <div class="energy-col"><div class="energy-bar-out"><div class="energy-bar-in" id="eBarOi" style="height:0%; background:var(--cyan);"></div></div><div class="energy-col-label">OI</div></div>
+        <div class="energy-col"><div class="energy-bar-out"><div class="energy-bar-in" id="eBarPrice" style="height:0%; background:var(--cyan);"></div></div><div class="energy-col-label">Price</div></div>
+        <div class="energy-col"><div class="energy-bar-out"><div class="energy-bar-in" id="eBarVol" style="height:0%; background:var(--cyan);"></div></div><div class="energy-col-label">Volume</div></div>
+      </div>
+    </div>
+
+    <!-- SIGNAL RELIABILITY (new) -->
+    <div class="panel">
+      <h2>SIGNAL RELIABILITY <span class="info-icon" data-tip="How much to trust today's reading. Built from exchange agreement, historical match strength, data completeness, and how aligned the consensus votes are.">i</span><span class="tip-text"></span></h2>
+      <div class="reliab-badge" id="reliabBadge" style="background:var(--panel-2); color:var(--dim);">--</div>
+      <span style="font-family:'Rajdhani',sans-serif; font-weight:700; font-size:20px; margin-left:10px;" id="reliabNum">--%</span>
+      <div class="bignote" id="reliabNote">--</div>
+    </div>
+
     <!-- MARKET INTENT -->
     <div class="panel">
-      <h2>MARKET INTENT <span class="info-icon" data-tip="Inferred, not observed — built from spot-vs-leverage volume balance and OI direction. Treat as a probability lean, not a fact.">i</span>
-        <span class="tip-text"></span>
-      </h2>
+      <h2>MARKET INTENT <span class="info-icon" data-tip="Inferred, not observed — built from spot-vs-leverage volume balance and OI direction. Treat as a probability lean, not a fact.">i</span><span class="tip-text"></span></h2>
       <div class="row"><span class="k">Professionals</span><span class="v" id="intentPro">--</span></div>
       <div class="row"><span class="k">Retail</span><span class="v" id="intentRetail">--</span></div>
       <div class="row"><span class="k">Likely Next Move</span><span class="v" id="intentNext" style="font-size:12px; text-align:right; max-width:60%;">--</span></div>
       <div class="row"><span class="k">Confidence</span><span class="v" id="intentConf">--%</span></div>
     </div>
 
-    <!-- WHO GETS REKT -->
     <div class="panel">
       <h2>WHO GETS REKT?</h2>
       <div class="duo-bar"><div class="duo-label">Longs</div><div class="bar-track"><div class="bar-fill" id="rektLong" style="width:50%; background:var(--amber);"></div></div><div class="duo-val" id="rektLongPct">50%</div></div>
@@ -148,7 +207,6 @@
     </div>
 
     <div class="grid2">
-      <!-- OI CONTEXT -->
       <div class="panel">
         <h2>OPEN INTEREST CONTEXT</h2>
         <div class="row"><span class="k">Current OI</span><span class="v" id="oiCurrent">--</span></div>
@@ -157,7 +215,6 @@
         <div class="row"><span class="k">30 Day Percentile</span><span class="v" id="oi30pct">--</span></div>
       </div>
 
-      <!-- FUNDING CONTEXT -->
       <div class="panel">
         <h2>FUNDING CONTEXT</h2>
         <div class="row"><span class="k">Funding</span><span class="v" id="fundRate">--</span></div>
@@ -167,7 +224,6 @@
       </div>
     </div>
 
-    <!-- SPOT VS FUTURES -->
     <div class="panel">
       <h2>SPOT VS LEVERAGE <span class="info-icon" data-tip="Spot/Futures volume ratio, 24h quote volume. Thresholds are a rough read, not an industry-standard cutoff — futures volume naturally dominates XRP most of the time.">i</span><span class="tip-text"></span></h2>
       <div class="row"><span class="k">Reading</span><span class="badge" id="svfLabel" style="color:var(--dim); border-color:var(--line);">--</span></div>
@@ -175,14 +231,12 @@
       <div class="bignote" id="svfNote">--</div>
     </div>
 
-    <!-- SMART MONEY -->
     <div class="panel">
       <h2>SMART MONEY VS RETAIL FOMO <span class="info-icon" data-tip="Probability-based estimate, not a measurement. Smart money proxy = spot dominance + low funding extremity. Retail FOMO proxy = funding extremity + fast OI build.">i</span><span class="tip-text"></span></h2>
       <div class="duo-bar"><div class="duo-label">Smart Money</div><div class="bar-track"><div class="bar-fill" id="smartBar" style="width:0%; background:var(--cyan);"></div></div><div class="duo-val" id="smartPct">--</div></div>
       <div class="duo-bar"><div class="duo-label">Retail FOMO</div><div class="bar-track"><div class="bar-fill" id="fomoBar" style="width:0%; background:var(--amber);"></div></div><div class="duo-val" id="fomoPct">--</div></div>
     </div>
 
-    <!-- LIQUIDITY GRAVITY -->
     <div class="panel">
       <h2>LIQUIDITY GRAVITY <span class="info-icon" data-tip="Estimated from common 10x/20x/25x leverage entry clusters around current price. Exchanges don't publish real stop locations — this is gravity, not gospel.">i</span><span class="tip-text"></span></h2>
       <div class="duo-bar"><div class="duo-label">Above Price</div><div class="bar-track"><div class="bar-fill" id="liqAbove" style="width:50%; background:var(--green);"></div></div><div class="duo-val" id="liqAbovePct">--</div></div>
@@ -190,21 +244,18 @@
       <div class="row"><span class="k">Likely Magnet</span><span class="v" id="liqMagnet">--</span></div>
     </div>
 
-    <!-- HIDDEN DIVERGENCE -->
     <div class="panel">
       <h2>HIDDEN DIVERGENCES</h2>
       <div class="bignote" id="divNormal">Scanning combinations of price, OI, funding and volume...</div>
-      <div class="warn-box" id="divWarn">Hidden Warning: leverage increasing without genuine demand.</div>
+      <div class="warn-box" id="divWarn" style="display:none;">Hidden Warning: leverage increasing without genuine demand.</div>
     </div>
 
-    <!-- TRAP TIMELINE -->
     <div class="panel">
       <h2>TRAP TIMELINE</h2>
       <div class="row"><span class="k">Current state age</span><span class="v" id="trapAge">--</span></div>
       <div class="bignote">Longer build-ups before a state change generally produce stronger releases when they resolve.</div>
     </div>
 
-    <!-- HISTORICAL COMPARISON -->
     <div class="panel">
       <h2>HISTORICAL COMPARISON <span class="info-icon" data-tip="Real data: matches today's funding+OI signature against the last ~25 days using actual Binance history, then shows what really happened the next day. Two-factor match only — a rough echo, not a forecast.">i</span><span class="tip-text"></span></h2>
       <div class="row"><span class="k">Current Pattern</span><span class="v" id="histPattern">--</span></div>
@@ -213,35 +264,43 @@
       <div class="row"><span class="k">Similarity</span><span class="v" id="histConf">--</span></div>
     </div>
 
-    <!-- RISK METER -->
     <div class="panel">
       <h2>RISK METER <span class="info-icon" data-tip="Trend and risk are kept separate on purpose — a bullish trend can still be high risk if it's leverage-fuelled.">i</span><span class="tip-text"></span></h2>
       <div class="row"><span class="k">Trend</span><span class="v" id="riskTrend">--</span></div>
       <div class="row"><span class="k">Risk</span><span class="v" id="riskLevel">--</span></div>
     </div>
 
-    <!-- LIQUIDATION ZONES (kept from v1) -->
     <div class="panel">
       <h2>ESTIMATED LIQUIDATION ZONES</h2>
       <div id="zonesList"></div>
     </div>
+
+    <!-- LEARNING MODE (new) -->
+    <div class="panel">
+      <h2>LEARNING MODE <span class="info-icon" data-tip="Stored in this browser only (localStorage). Predictions are logged when the dashboard takes a clear stance, then checked ~30 minutes later against actual price movement.">i</span><span class="tip-text"></span></h2>
+      <div class="row"><span class="k">Dashboard Accuracy (last 30 resolved)</span><span class="v" id="accuracyNum">--%</span></div>
+      <div id="predList"></div>
+      <button class="reset-btn" id="resetLearning">Reset learning data</button>
+    </div>
   </div>
 
-  <!-- JON MODE -->
   <div id="jonView" style="display:none;">
     <div class="panel">
       <h2>MARKET SUMMARY</h2>
       <div class="jon-line"><span class="k">Trap Risk</span><span class="v" id="jTrapRisk">--</span></div>
       <div class="jon-line"><span class="k">Professionals</span><span class="v" id="jPro">--</span></div>
       <div class="jon-line"><span class="k">Retail</span><span class="v" id="jRetail">--</span></div>
+      <div class="jon-line"><span class="k">Consensus</span><span class="v" id="jConsensus">--</span></div>
+      <div class="jon-line"><span class="k">Reliability</span><span class="v" id="jReliability">--</span></div>
       <div class="jon-line"><span class="k">Current Bias</span><span class="v" id="jBias">--</span></div>
       <div class="jon-line"><span class="k">Edge</span><span class="v" id="jEdge">--</span></div>
       <div class="jon-action" id="jAction">Suggested Action: calibrating...</div>
+      <div class="jon-honesty" id="jHonesty"></div>
     </div>
   </div>
 
   <footer>
-    HIDDEN XRP · session data only, resets on reload · historical comparison uses real Binance data, capped at ~25 days<br>
+    HIDDEN XRP · live data resets on reload, learning log saved in this browser only<br>
     built by webzy87 &amp; Rose &amp; Ren
   </footer>
 </div>
@@ -249,11 +308,10 @@
 <script>
 (function(){
   const SYMBOL = 'XRPUSDT';
+  const STORAGE_KEY = 'hiddenxrp_predictions_v1';
   let gbpRate = 0.79;
-  let oiDailyHist = [];     // [{t, oi}]
-  let fundingHistAll = [];  // [{t, rate}]
-  let dailyKlines = [];     // [{t, open, high, low, close}]
-  let sessionBuf = [];      // recent live ticks this session: {t, price, oi}
+  let oiDailyHist = [], fundingHistAll = [], dailyKlines = [];
+  let sessionBuf = []; // {t, price, oi, futVol}
   let alertsOn = false;
   let lastState = null, stateStartTime = Date.now();
   let lastAnnFunding = null, lastOiTodayPct = null;
@@ -274,13 +332,62 @@
     }catch(e){}
   }
 
+  // ---------- LEARNING STORE ----------
+  function loadPredictions(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||[]; }catch(e){ return []; } }
+  function savePredictions(arr){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }catch(e){} }
+  let predictions = loadPredictions();
+  let lastPredictionTime = predictions.length ? predictions[predictions.length-1].t : 0;
+
+  function logPrediction(text, direction, price){
+    if(Date.now() - lastPredictionTime < 20*60*1000) return; // throttle: max 1 every 20 min
+    predictions.push({ id: Date.now(), t: Date.now(), text, direction, priceAt: price, resolved:false, outcome:null });
+    lastPredictionTime = Date.now();
+    if(predictions.length>200) predictions = predictions.slice(-200);
+    savePredictions(predictions);
+  }
+
+  function resolvePredictions(currentPrice){
+    const WINDOW = 30*60*1000;
+    let changed=false;
+    predictions.forEach(p=>{
+      if(p.resolved) return;
+      if(Date.now() - p.t < WINDOW) return;
+      const movePct = (currentPrice - p.priceAt)/p.priceAt*100;
+      let correct=false;
+      if(p.direction==='up') correct = movePct > 0.3;
+      else if(p.direction==='down') correct = movePct < -0.3;
+      else if(p.direction==='expansion') correct = Math.abs(movePct) > 0.5;
+      p.resolved = true; p.outcome = correct ? 'Correct' : 'Wrong';
+      changed=true;
+    });
+    if(changed) savePredictions(predictions);
+  }
+
+  function renderLearning(){
+    const resolved = predictions.filter(p=>p.resolved).slice(-30);
+    const correctCount = resolved.filter(p=>p.outcome==='Correct').length;
+    const acc = resolved.length ? Math.round((correctCount/resolved.length)*100) : null;
+    $('accuracyNum').textContent = acc===null ? 'No data yet' : acc+'% ('+resolved.length+' signals)';
+    const list = $('predList'); list.innerHTML='';
+    const recent = predictions.slice(-6).reverse();
+    if(recent.length===0){ list.innerHTML = '<div class="bignote">No predictions logged yet — they appear when the dashboard takes a clear stance.</div>'; return; }
+    recent.forEach(p=>{
+      const row = document.createElement('div'); row.className='pred-row';
+      const badge = !p.resolved ? `<span class="pred-outcome" style="background:var(--panel-2); color:var(--dim);">Pending</span>`
+        : p.outcome==='Correct' ? `<span class="pred-outcome" style="background:rgba(61,220,151,0.15); color:var(--green);">Correct</span>`
+        : `<span class="pred-outcome" style="background:rgba(255,59,59,0.15); color:var(--red);">Wrong</span>`;
+      row.innerHTML = `<span>${p.text}</span>${badge}`;
+      list.appendChild(row);
+    });
+  }
+
+  $('resetLearning')?.addEventListener('click', ()=>{
+    if(confirm('Clear all learning data stored in this browser?')){ predictions=[]; savePredictions(predictions); renderLearning(); }
+  });
+
   // ---------- FETCHERS ----------
   async function fetchGbpRate(){
-    try{
-      const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ripple&vs_currencies=gbp,usd');
-      const d = await r.json();
-      if(d.ripple) gbpRate = d.ripple.gbp / d.ripple.usd;
-    }catch(e){}
+    try{ const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ripple&vs_currencies=gbp,usd'); const d = await r.json(); if(d.ripple) gbpRate = d.ripple.gbp/d.ripple.usd; }catch(e){}
   }
 
   async function fetchHistorical(){
@@ -290,12 +397,10 @@
         fetch(`https://fapi.binance.com/fapi/v1/fundingRate?symbol=${SYMBOL}&limit=96`),
         fetch(`https://fapi.binance.com/fapi/v1/klines?symbol=${SYMBOL}&interval=1d&limit=32`)
       ]);
-      const oiJson = await oiRes.json();
-      const fundJson = await fundRes.json();
-      const klineJson = await klineRes.json();
+      const oiJson = await oiRes.json(); const fundJson = await fundRes.json(); const klineJson = await klineRes.json();
       oiDailyHist = oiJson.map(d=>({t:d.timestamp, oi:parseFloat(d.sumOpenInterest)}));
       fundingHistAll = fundJson.map(d=>({t:d.fundingTime, rate:parseFloat(d.fundingRate)}));
-      dailyKlines = klineJson.map(k=>({t:k[0], open:parseFloat(k[1]), high:parseFloat(k[2]), low:parseFloat(k[3]), close:parseFloat(k[4])}));
+      dailyKlines = klineJson.map(k=>({t:k[0], open:parseFloat(k[1]), high:parseFloat(k[2]), low:parseFloat(k[3]), close:parseFloat(k[4]), vol:parseFloat(k[5])}));
     }catch(e){ console.warn('historical fetch failed', e); }
   }
 
@@ -307,334 +412,346 @@
       fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${SYMBOL}`),
       fetch(`https://api.bybit.com/v5/market/tickers?category=linear&symbol=${SYMBOL}`).catch(()=>null)
     ]);
-    const prem = await premRes.json();
-    const oi = await oiRes.json();
-    const futTicker = await futTickerRes.json();
-    const spotTicker = await spotTickerRes.json();
+    const prem = await premRes.json(); const oi = await oiRes.json(); const futTicker = await futTickerRes.json(); const spotTicker = await spotTickerRes.json();
     let bybitFunding = null;
     try{ const bj = await bybitRes.json(); bybitFunding = parseFloat(bj.result.list[0].fundingRate); }catch(e){}
     return {
-      markPrice: parseFloat(prem.markPrice),
-      fundingRate: parseFloat(prem.lastFundingRate),
-      nextFundingTime: prem.nextFundingTime,
-      openInterest: parseFloat(oi.openInterest),
-      futuresQuoteVol: parseFloat(futTicker.quoteVolume),
-      spotQuoteVol: parseFloat(spotTicker.quoteVolume),
-      bybitFunding
+      markPrice: parseFloat(prem.markPrice), fundingRate: parseFloat(prem.lastFundingRate), nextFundingTime: prem.nextFundingTime,
+      openInterest: parseFloat(oi.openInterest), futuresQuoteVol: parseFloat(futTicker.quoteVolume), spotQuoteVol: parseFloat(spotTicker.quoteVolume), bybitFunding
     };
   }
 
   // ---------- HELPERS ----------
-  function percentile(arr, val){
-    const sorted = [...arr].sort((a,b)=>a-b);
-    let below = sorted.filter(v=>v<val).length;
-    return Math.round((below/sorted.length)*100);
-  }
-
+  function percentile(arr, val){ const sorted=[...arr].sort((a,b)=>a-b); const below=sorted.filter(v=>v<val).length; return Math.round((below/sorted.length)*100); }
+  function stdev(arr){ if(arr.length===0) return 0; const m=arr.reduce((a,b)=>a+b,0)/arr.length; return Math.sqrt(arr.reduce((s,v)=>s+(v-m)*(v-m),0)/arr.length); }
   function dailyFundingAvg(daysBack){
-    // average funding rate for the UTC day `daysBack` days before today (0 = today so far)
-    const now = Date.now();
-    const dayMs = 86400000;
-    const dayStart = Math.floor(now/dayMs)*dayMs - daysBack*dayMs;
-    const dayEnd = dayStart + dayMs;
+    const now=Date.now(); const dayMs=86400000; const dayStart=Math.floor(now/dayMs)*dayMs - daysBack*dayMs; const dayEnd=dayStart+dayMs;
     const inRange = fundingHistAll.filter(f=>f.t>=dayStart && f.t<dayEnd);
     if(inRange.length===0) return null;
     return inRange.reduce((s,f)=>s+f.rate,0)/inRange.length;
   }
 
   function setCoil(tension, direction){
-    const path = $('coilPath');
-    const turns = 6, h=120, w=100, cx=50;
-    const baseAmp = 32 - (tension*0.18);
-    let d = `M ${cx} 4`; let y=4; let dir=1;
-    const stepY = (h-8)/(turns*2);
-    for(let i=0;i<turns*2;i++){
-      const nextY = y+stepY; const x = cx+dir*baseAmp;
-      d += ` Q ${x} ${y+stepY/2} ${cx} ${nextY}`;
-      y = nextY; dir*=-1;
-    }
+    const path=$('coilPath'); const turns=6,h=120,cx=50; const baseAmp=32-(tension*0.18);
+    let d=`M ${cx} 4`; let y=4; let dir=1; const stepY=(h-8)/(turns*2);
+    for(let i=0;i<turns*2;i++){ const nextY=y+stepY; const x=cx+dir*baseAmp; d+=` Q ${x} ${y+stepY/2} ${cx} ${nextY}`; y=nextY; dir*=-1; }
     path.setAttribute('d', d);
-    let color = '#00e5d4';
-    if(direction==='long') color = tension>65?'#ff3b3b':'#ff8c2b';
-    if(direction==='short') color = tension>65?'#ff3b3b':'#3ddc97';
-    path.style.stroke = color;
+    let color='#00e5d4'; if(direction==='long') color=tension>65?'#ff3b3b':'#ff8c2b'; if(direction==='short') color=tension>65?'#ff3b3b':'#3ddc97';
+    path.style.stroke=color;
   }
 
-  // ---------- MAIN COMPUTE + RENDER ----------
+  function voteChip(vote){
+    const color = (vote==='Bullish'||vote==='Up') ? 'var(--green)' : (vote==='Bearish'||vote==='Down') ? 'var(--red)' : 'var(--dim)';
+    const bg = (vote==='Bullish'||vote==='Up') ? 'rgba(61,220,151,0.15)' : (vote==='Bearish'||vote==='Down') ? 'rgba(255,59,59,0.15)' : 'var(--panel-2)';
+    return `<span class="vote-chip" style="color:${color}; background:${bg};">${vote}</span>`;
+  }
+
+  // ---------- MAIN ----------
   async function tick(){
     let live;
     try{ live = await fetchLive(); }
     catch(e){ $('loadingText').textContent='FEED ERROR — RETRYING...'; $('loadingOverlay').style.display='flex'; return; }
     $('loadingOverlay').style.display='none';
 
-    sessionBuf.push({t:Date.now(), price:live.markPrice, oi:live.openInterest});
+    sessionBuf.push({t:Date.now(), price:live.markPrice, oi:live.openInterest, futVol:live.futuresQuoteVol});
     if(sessionBuf.length>80) sessionBuf.shift();
 
-    const gbpPrice = live.markPrice * gbpRate;
+    const gbpPrice = live.markPrice*gbpRate;
     $('priceGbp').textContent = fmtGbp(gbpPrice);
     const mins = Math.max(0, Math.round((live.nextFundingTime-Date.now())/60000));
     $('fundTimer').textContent = `next funding ${Math.floor(mins/60)}h ${mins%60}m`;
 
-    const annFunding = live.fundingRate*3*365*100; // % per year
+    const annFunding = live.fundingRate*3*365*100;
     const fundCrowd = Math.abs(annFunding)<3?'Low':Math.abs(annFunding)<8?'Normal':Math.abs(annFunding)<20?'High':'Extreme';
     $('fundRate').textContent = annFunding.toFixed(2)+'%/yr';
-    $('fundMeaning').textContent = live.fundingRate>0 ? 'Longs paying Shorts' : live.fundingRate<0 ? 'Shorts paying Longs' : 'Neutral';
+    $('fundMeaning').textContent = live.fundingRate>0?'Longs paying Shorts':live.fundingRate<0?'Shorts paying Longs':'Neutral';
     $('fundCrowd').textContent = fundCrowd;
     const crowdColor = fundCrowd==='Low'?'var(--dim)':fundCrowd==='Normal'?'var(--cyan)':fundCrowd==='High'?'var(--amber)':'var(--red)';
-    $('fundCrowd').style.color = crowdColor; $('fundCrowd').style.borderColor = crowdColor;
+    $('fundCrowd').style.color=crowdColor; $('fundCrowd').style.borderColor=crowdColor;
     if(live.bybitFunding!==null){
       const agree = Math.sign(live.bybitFunding)===Math.sign(live.fundingRate);
       $('fundBybit').textContent = `${agree?'agrees':'diverges'} (${(live.bybitFunding*3*365*100).toFixed(2)}%/yr)`;
     }
 
-    // OI context
     let oiTodayPct=0, oi7dAvgPct=0, oi30pct=50;
     if(oiDailyHist.length>=2){
-      const sorted = [...oiDailyHist].sort((a,b)=>a.t-b.t);
-      const today = live.openInterest;
-      const prevDay = sorted[sorted.length-2].oi;
+      const sorted=[...oiDailyHist].sort((a,b)=>a.t-b.t);
+      const today=live.openInterest, prevDay=sorted[sorted.length-2].oi;
       oiTodayPct = ((today-prevDay)/prevDay)*100;
-      const last7 = sorted.slice(-8);
-      const changes=[];
+      const last7=sorted.slice(-8); const changes=[];
       for(let i=1;i<last7.length;i++) changes.push(((last7[i].oi-last7[i-1].oi)/last7[i-1].oi)*100);
       oi7dAvgPct = changes.length? changes.reduce((a,b)=>a+b,0)/changes.length : 0;
-      const last30vals = sorted.slice(-30).map(d=>d.oi);
-      oi30pct = percentile(last30vals, today);
+      oi30pct = percentile(sorted.slice(-30).map(d=>d.oi), today);
     }
     $('oiCurrent').textContent = fmtNum(live.openInterest)+' XRP';
     $('oiToday').textContent = sign(oiTodayPct)+oiTodayPct.toFixed(2)+'%';
     $('oi7d').textContent = sign(oi7dAvgPct)+oi7dAvgPct.toFixed(2)+'%';
     $('oi30pct').textContent = oi30pct+'th pct';
 
-    // Spot vs futures
-    const svfRatio = live.spotQuoteVol / live.futuresQuoteVol;
+    const svfRatio = live.spotQuoteVol/live.futuresQuoteVol;
     $('svfRatio').textContent = svfRatio.toFixed(3);
     let svfLabel='Leverage Dominating', svfColor='var(--amber)', svfNote='Most volume is leveraged. Moves can reverse violently once positions unwind.';
     if(svfRatio>0.35){ svfLabel='Spot Dominating'; svfColor='var(--green)'; svfNote='Healthy trend signal — real buying/selling, not just leverage churn.'; }
     else if(svfRatio>0.18){ svfLabel='Mixed'; svfColor='var(--cyan)'; svfNote='Reasonable balance between spot and leverage activity.'; }
-    $('svfLabel').textContent = svfLabel; $('svfLabel').style.color=svfColor; $('svfLabel').style.borderColor=svfColor;
-    $('svfNote').textContent = svfNote;
+    $('svfLabel').textContent=svfLabel; $('svfLabel').style.color=svfColor; $('svfLabel').style.borderColor=svfColor;
+    $('svfNote').textContent=svfNote;
 
-    // price trend (last ~10 mins of session buffer, fallback to today's kline)
-    let priceMoved=false, priceDir=0;
+    let priceMoved=false, priceDir=0, futVolDir=0;
     if(sessionBuf.length>=4){
       const a=sessionBuf[0].price, b=sessionBuf[sessionBuf.length-1].price;
-      priceMoved = Math.abs((b-a)/a) > 0.003;
-      priceDir = b>a?1:(b<a?-1:0);
+      priceMoved = Math.abs((b-a)/a) > 0.003; priceDir = b>a?1:(b<a?-1:0);
+      const fa=sessionBuf[0].futVol, fb=sessionBuf[sessionBuf.length-1].futVol;
+      futVolDir = fb>fa?1:(fb<fa?-1:0);
     }
+    // price structure vs today's open
+    let structureDir=0;
+    if(dailyKlines.length){ const todayOpen=dailyKlines[dailyKlines.length-1].open; structureDir = live.markPrice>todayOpen?1:(live.markPrice<todayOpen?-1:0); }
 
-    // Hidden divergence check
     let divCount=0;
     if(!priceMoved) divCount++;
     if(oiTodayPct>0.5) divCount++;
     let fundingRising=false;
-    const avgToday = dailyFundingAvg(0), avgYesterday = dailyFundingAvg(1);
-    if(avgToday!==null && avgYesterday!==null && avgToday>avgYesterday) { fundingRising=true; divCount++; }
+    const avgToday=dailyFundingAvg(0), avgYesterday=dailyFundingAvg(1);
+    if(avgToday!==null && avgYesterday!==null && avgToday>avgYesterday){ fundingRising=true; divCount++; }
     if(svfRatio<0.18) divCount++;
     const divergenceActive = divCount>=3;
-    if(divergenceActive){
-      $('divWarn').classList.add('show'); $('divNormal').style.display='none';
-    } else {
-      $('divWarn').classList.remove('show'); $('divNormal').style.display='block';
-      $('divNormal').textContent = divCount===0 ? 'Clean — no overlapping warning signs right now.' : `${divCount}/4 warning conditions met — not enough to flag yet.`;
-    }
+    if(divergenceActive){ $('divWarn').style.display='block'; $('divNormal').style.display='none'; }
+    else { $('divWarn').style.display='none'; $('divNormal').style.display='block';
+      $('divNormal').textContent = divCount===0?'Clean — no overlapping warning signs right now.':`${divCount}/4 warning conditions met — not enough to flag yet.`; }
 
-    // Who gets rekt
     let longPct=50;
-    longPct += Math.min(Math.abs(annFunding)*1.2, 30) * (annFunding>0?1:-1);
-    if(oiTodayPct>0 && annFunding>0) longPct += 5;
-    if(oiTodayPct>0 && annFunding<0) longPct -= 5;
-    longPct = Math.max(5, Math.min(95, Math.round(longPct)));
-    const shortPct = 100-longPct;
+    longPct += Math.min(Math.abs(annFunding)*1.2,30)*(annFunding>0?1:-1);
+    if(oiTodayPct>0 && annFunding>0) longPct+=5; if(oiTodayPct>0 && annFunding<0) longPct-=5;
+    longPct = Math.max(5, Math.min(95, Math.round(longPct))); const shortPct=100-longPct;
     $('rektLong').style.width=longPct+'%'; $('rektShort').style.width=shortPct+'%';
     $('rektLongPct').textContent=longPct+'%'; $('rektShortPct').textContent=shortPct+'%';
-    $('rektReason').textContent = annFunding>3
-      ? `Funding positive (${annFunding.toFixed(1)}%/yr) while OI ${oiTodayPct>=0?'rises':'falls'} — long side is the crowded one.`
-      : annFunding<-3
-      ? `Funding negative (${annFunding.toFixed(1)}%/yr) while OI ${oiTodayPct>=0?'rises':'falls'} — short side is the crowded one.`
+    $('rektReason').textContent = annFunding>3 ? `Funding positive (${annFunding.toFixed(1)}%/yr) while OI ${oiTodayPct>=0?'rises':'falls'} — long side is the crowded one.`
+      : annFunding<-3 ? `Funding negative (${annFunding.toFixed(1)}%/yr) while OI ${oiTodayPct>=0?'rises':'falls'} — short side is the crowded one.`
       : 'Funding close to neutral — no side is obviously more crowded right now.';
 
-    // Smart money vs retail FOMO (heuristic)
-    let smart = 40 + svfRatio*120 - Math.abs(annFunding)*0.8;
-    smart = Math.max(5, Math.min(95, Math.round(smart)));
-    let fomo = Math.max(5, Math.min(95, Math.round(Math.abs(annFunding)*1.5 + Math.max(0,oiTodayPct)*4)));
+    let smart = Math.max(5, Math.min(95, Math.round(40+svfRatio*120-Math.abs(annFunding)*0.8)));
+    let fomo = Math.max(5, Math.min(95, Math.round(Math.abs(annFunding)*1.5+Math.max(0,oiTodayPct)*4)));
     $('smartBar').style.width=smart+'%'; $('smartPct').textContent=smart+'%';
     $('fomoBar').style.width=fomo+'%'; $('fomoPct').textContent=fomo+'%';
 
-    // Market intent (inferred sentences)
-    let proLabel = svfRatio>0.3 ? 'Possibly Accumulating' : svfRatio<0.15 ? 'Possibly Distributing / Sidelined' : 'Neutral';
-    let retailLabel = annFunding>5 ? 'Increasing Long Exposure' : annFunding<-5 ? 'Increasing Short Exposure' : 'Roughly Balanced';
-    let nextMove = divergenceActive
-      ? 'Shakeout likely before any real continuation'
-      : (priceMoved && oiTodayPct>0 ? 'Continuation looks more genuine than trap' : 'No clear edge — range conditions');
-    const intentConf = Math.max(40, Math.min(85, 50 + Math.abs(annFunding)*0.6 + (divergenceActive?15:0)));
-    $('intentPro').textContent = proLabel;
-    $('intentRetail').textContent = retailLabel;
-    $('intentNext').textContent = nextMove;
-    $('intentConf').textContent = Math.round(intentConf)+'%';
+    let proLabel = svfRatio>0.3?'Possibly Accumulating':svfRatio<0.15?'Possibly Distributing / Sidelined':'Neutral';
+    let retailLabel = annFunding>5?'Increasing Long Exposure':annFunding<-5?'Increasing Short Exposure':'Roughly Balanced';
+    let nextMove = divergenceActive?'Shakeout likely before any real continuation':(priceMoved && oiTodayPct>0?'Continuation looks more genuine than trap':'No clear edge — range conditions');
+    const intentConf = Math.max(40, Math.min(85, 50+Math.abs(annFunding)*0.6+(divergenceActive?15:0)));
+    $('intentPro').textContent=proLabel; $('intentRetail').textContent=retailLabel; $('intentNext').textContent=nextMove; $('intentConf').textContent=Math.round(intentConf)+'%';
 
-    // Liquidity gravity / zones
-    renderZones(live.markPrice);
+    const magnetInfo = renderZones(live.markPrice);
 
-    // Risk meter
     const trend = priceDir>0?'Bullish':priceDir<0?'Bearish':'Sideways';
     $('riskTrend').textContent = trend;
 
-    // Market pressure score + status
     let pressure = Math.min(45, Math.abs(annFunding)*1.4) + Math.min(30, Math.abs(oiTodayPct)*5) + (divergenceActive?25:0);
     pressure = Math.round(Math.min(100, pressure));
     $('pressureNum').textContent = pressure;
     let statusWord='CALM', statusColor='var(--dim)';
-    if(pressure>85){ statusWord='IMMINENT'; statusColor='var(--red)'; }
-    else if(pressure>65){ statusWord='HIGH RISK'; statusColor='var(--red)'; }
-    else if(pressure>40){ statusWord='LOADING'; statusColor='var(--amber)'; }
-    else if(pressure>20){ statusWord='BUILDING'; statusColor='var(--cyan)'; }
-    $('statusWord').textContent=statusWord; $('statusWord').style.color=statusColor; $('statusWord').style.background='rgba(255,255,255,0.04)';
+    if(pressure>85){ statusWord='IMMINENT'; statusColor='var(--red)'; } else if(pressure>65){ statusWord='HIGH RISK'; statusColor='var(--red)'; }
+    else if(pressure>40){ statusWord='LOADING'; statusColor='var(--amber)'; } else if(pressure>20){ statusWord='BUILDING'; statusColor='var(--cyan)'; }
+    $('statusWord').textContent=statusWord; $('statusWord').style.color=statusColor;
     $('riskLevel').textContent = pressure>65?'High':pressure>35?'Medium':'Low';
 
     const direction = annFunding>2?'long':(annFunding<-2?'short':'neutral');
     setCoil(pressure, direction);
 
-    // confidence
-    let conf = 50;
-    if(live.bybitFunding!==null && Math.sign(live.bybitFunding)===Math.sign(live.fundingRate)) conf+=15;
-    if(oiDailyHist.length>=20) conf+=15;
-    if(sessionBuf.length>=10) conf+=10;
-    conf = Math.min(95, conf);
+    let conf=50; if(live.bybitFunding!==null && Math.sign(live.bybitFunding)===Math.sign(live.fundingRate)) conf+=15;
+    if(oiDailyHist.length>=20) conf+=15; if(sessionBuf.length>=10) conf+=10; conf=Math.min(95,conf);
     $('confNum').textContent = conf+'%';
 
-    // trap age — track state changes
-    if(statusWord !== lastState){
-      lastState = statusWord; stateStartTime = Date.now();
-    }
+    if(statusWord!==lastState){ lastState=statusWord; stateStartTime=Date.now(); }
     const ageMin = Math.round((Date.now()-stateStartTime)/60000);
-    $('trapAge').textContent = ageMin<60 ? `${ageMin} min` : `${(ageMin/60).toFixed(1)} hrs`;
+    $('trapAge').textContent = ageMin<60?`${ageMin} min`:`${(ageMin/60).toFixed(1)} hrs`;
 
-    // historical comparison
-    renderHistorical(annFunding/100/3/365, oiTodayPct); // pass per-funding-period rate back for fair comparison
+    const histResult = renderHistorical(live.fundingRate, oiTodayPct);
+
+    // ===== MARKET CONSENSUS =====
+    const fundingVote = annFunding>8?'Bearish':annFunding<-8?'Bullish':'Neutral';
+    const oiVote = oiTodayPct>1 ? (priceDir>=0?'Bullish':'Bearish') : 'Neutral';
+    const spotVote = svfRatio>0.3 ? (priceDir>0?'Bullish':priceDir<0?'Bearish':'Neutral') : 'Neutral';
+    const futVote = futVolDir>0 ? (priceDir>0?'Bullish':priceDir<0?'Bearish':'Neutral') : 'Neutral';
+    const structVote = structureDir>0?'Bullish':structureDir<0?'Bearish':'Neutral';
+    const liqAboveDominant = magnetInfo.abovePct>magnetInfo.belowPct+10;
+    const liqBelowDominant = magnetInfo.belowPct>magnetInfo.abovePct+10;
+    const liqVote = liqAboveDominant?'Up':liqBelowDominant?'Down':'Neutral';
+    const histVote = histResult.nextReturn>0.5?'Bullish':histResult.nextReturn<-0.5?'Bearish':'Neutral';
+
+    const votes = [
+      {name:'Funding', vote:fundingVote},
+      {name:'Open Interest', vote:oiVote},
+      {name:'Spot Volume', vote:spotVote},
+      {name:'Futures Volume', vote:futVote},
+      {name:'Price Structure', vote:structVote},
+      {name:'Liquidation Gravity', vote:liqVote},
+      {name:'Historical Match', vote:histVote}
+    ];
+    $('voteGrid').innerHTML = votes.map(v=>`<div class="vote-row"><span class="vote-name">${v.name}</span>${voteChip(v.vote)}</div>`).join('');
+    const bullCount = votes.filter(v=>v.vote==='Bullish'||v.vote==='Up').length;
+    const bearCount = votes.filter(v=>v.vote==='Bearish'||v.vote==='Down').length;
+    const majority = bullCount>=bearCount ? 'Bullish' : 'Bearish';
+    const majorityCount = Math.max(bullCount, bearCount);
+    const consensusScore = Math.round((majorityCount/votes.length)*100);
+    $('consensusScore').textContent = consensusScore+'%';
+    $('consensusScore').style.color = consensusScore>=70?'var(--green)':consensusScore>=50?'var(--amber)':'var(--red)';
+    $('consensusLabel').textContent = consensusScore>=70 ? `STRONG ${majority.toUpperCase()} CONSENSUS` : consensusScore>=50 ? `MIXED — LEANING ${majority.toUpperCase()}` : 'CONSENSUS BROKEN — EXPECT CHOP';
+
+    // ===== CONTRADICTIONS =====
+    const contras = [];
+    if(priceDir>0 && oiTodayPct>0.5 && svfRatio<0.18){
+      contras.push('<b>Price rising, Spot volume weak, OI rising.</b> Price is rising on leverage rather than genuine buying.');
+    }
+    if(annFunding>15 && oiTodayPct<-0.5){
+      contras.push('<b>Funding extremely positive, OI falling.</b> Looks like position unwind rather than fresh longs — treat the funding reading as stale.');
+    }
+    if(priceDir<0 && svfRatio>0.3 && futVolDir<=0){
+      contras.push('<b>Price falling, Spot volume strong, Futures volume flat.</b> Selling looks like genuine distribution, not a leverage flush.');
+    }
+    if(liqAboveDominant && structVote==='Bearish'){
+      contras.push('<b>Liquidity sits above price, but structure is bearish.</b> Possible stop-hunt setup before a move down, not genuine breakout fuel.');
+    }
+    if(histVote==='Bullish' && consensusScore<50){
+      contras.push('<b>Historical echo leans bullish, but consensus is broken.</b> Treat the historical match as weak context, not a signal on its own.');
+    }
+    $('contraList').innerHTML = contras.length ? contras.map(c=>`<div class="contra-item">${c}</div>`).join('') : '<div class="contra-clean">No contradictions detected — signals are broadly consistent with each other.</div>';
+
+    // ===== VOLATILITY ENERGY =====
+    let fundEnergy=30, oiEnergy=30, priceEnergy=30, volEnergy=30;
+    if(fundingHistAll.length>=40){
+      const dailyAvgs=[]; for(let d=0;d<25;d++){ const v=dailyFundingAvg(d); if(v!==null) dailyAvgs.push(v); }
+      const recent = dailyAvgs.slice(0,3), baseline = dailyAvgs.slice(0,20);
+      const rStd=stdev(recent), bStd=stdev(baseline)||1e-9;
+      fundEnergy = Math.max(5, Math.min(100, Math.round(100 - Math.min(100,(rStd/bStd)*100))));
+    }
+    if(oiDailyHist.length>=20){
+      const sorted=[...oiDailyHist].sort((a,b)=>a.t-b.t); const changes=[];
+      for(let i=1;i<sorted.length;i++) changes.push(((sorted[i].oi-sorted[i-1].oi)/sorted[i-1].oi)*100);
+      const recent=changes.slice(-3), baseline=changes.slice(-20);
+      const rStd=stdev(recent), bStd=stdev(baseline)||1e-9;
+      oiEnergy = Math.max(5, Math.min(100, Math.round(100-Math.min(100,(rStd/bStd)*100))));
+    }
+    if(dailyKlines.length>=20){
+      const ranges = dailyKlines.map(k=>((k.high-k.low)/k.open)*100);
+      const recent=ranges.slice(-3), baseline=ranges.slice(-20);
+      const rAvg=recent.reduce((a,b)=>a+b,0)/recent.length, bAvg=baseline.reduce((a,b)=>a+b,0)/baseline.length||1e-9;
+      priceEnergy = Math.max(5, Math.min(100, Math.round(100-Math.min(100,(rAvg/bAvg)*100))));
+      const vols = dailyKlines.map(k=>k.vol);
+      const rVol=vols.slice(-3).reduce((a,b)=>a+b,0)/3, bVol=vols.slice(-20).reduce((a,b)=>a+b,0)/20||1e-9;
+      volEnergy = Math.max(5, Math.min(100, Math.round(100-Math.min(100,(rVol/bVol)*100))));
+    }
+    const energy = Math.round((fundEnergy+oiEnergy+priceEnergy+volEnergy)/4);
+    $('energyNum').textContent = energy+'%';
+    $('energyNum').style.color = energy>75?'var(--red)':energy>45?'var(--amber)':'var(--dim)';
+    $('energyNote').textContent = energy>75 ? 'Coiled tight across funding, OI, price and volume — expansion likely soon. Direction unknown.'
+      : energy>45 ? 'Some compression building, not extreme yet.' : 'Loose — no squeeze conditions present.';
+    $('eBarFund').style.height=fundEnergy+'%'; $('eBarOi').style.height=oiEnergy+'%'; $('eBarPrice').style.height=priceEnergy+'%'; $('eBarVol').style.height=volEnergy+'%';
+
+    // ===== SIGNAL RELIABILITY =====
+    let reliab = 20;
+    if(live.bybitFunding!==null && Math.sign(live.bybitFunding)===Math.sign(live.fundingRate)) reliab+=15;
+    reliab += Math.round((histResult.similarity||0)*0.2);
+    reliab += Math.round(consensusScore*0.3);
+    if(oiDailyHist.length>=25 && fundingHistAll.length>=80) reliab+=15;
+    reliab = Math.max(5, Math.min(98, Math.round(reliab)));
+    const reliabLabel = reliab>=80?'Excellent':reliab>=60?'Good':reliab>=40?'Average':'Poor';
+    const reliabColor = reliab>=80?'var(--green)':reliab>=60?'var(--cyan)':reliab>=40?'var(--amber)':'var(--red)';
+    $('reliabBadge').textContent = reliabLabel; $('reliabBadge').style.color=reliabColor; $('reliabBadge').style.background='rgba(255,255,255,0.04)';
+    $('reliabNum').textContent = reliab+'%'; $('reliabNum').style.color=reliabColor;
+    $('reliabNote').textContent = reliab>=60
+      ? `Funding and OI ${Math.sign(live.bybitFunding||0)===Math.sign(live.fundingRate)?'agree across exchanges':''}, consensus is ${consensusScore>=70?'strong':'moderate'}, historical match is ${histResult.similarity>=50?'reasonably tight':'loose'}.`
+      : `Reliability is low right now — ${oiDailyHist.length<25?'thin OI history, ':''}${consensusScore<50?'consensus is broken, ':''}treat any single signal with caution.`;
 
     // Jon mode
-    $('jTrapRisk').textContent = pressure+'%';
-    $('jPro').textContent = proLabel;
-    $('jRetail').textContent = retailLabel;
-    $('jBias').textContent = pressure>65 ? 'Wait' : (trend==='Bullish' && !divergenceActive ? 'Lean Long' : trend==='Bearish' && !divergenceActive ? 'Lean Short' : 'Wait');
-    $('jEdge').textContent = pressure>65 || divergenceActive ? 'Weak' : (Math.abs(annFunding)<5 ? 'Unclear' : 'Moderate');
+    $('jTrapRisk').textContent = pressure+'%'; $('jPro').textContent=proLabel; $('jRetail').textContent=retailLabel;
+    $('jConsensus').textContent = `${consensusScore}% (${majority})`;
+    $('jReliability').textContent = `${reliabLabel} (${reliab}%)`;
+    const bias = pressure>65?'Wait':(trend==='Bullish'&&!divergenceActive&&consensusScore>=60?'Lean Long':trend==='Bearish'&&!divergenceActive&&consensusScore>=60?'Lean Short':'Wait');
+    $('jBias').textContent = bias;
+    $('jEdge').textContent = (pressure>65||divergenceActive||consensusScore<50) ? 'Weak' : (Math.abs(annFunding)<5?'Unclear':'Moderate');
     $('jAction').textContent = 'Suggested Action: ' + (
+      consensusScore<50 ? "Signals disagree with each other right now — sit this one out." :
       divergenceActive ? 'Wait for the divergence to resolve before sizing up.' :
       pressure>65 ? `Reduce risk — ${direction!=='neutral'?direction+'s are crowded':'leverage is stretched'}.` :
       'Watch for OI to confirm direction before entering.'
     );
+    $('jHonesty').textContent = reliab<40 ? "\"I don't know\" — today's evidence is too thin or too conflicted to lean on." : '';
 
     // alerts
     if(alertsOn){
-      if(lastAnnFunding!==null && Math.sign(lastAnnFunding)!==Math.sign(annFunding) && Math.sign(annFunding)!==0){ beep(660); }
-      if(lastOiTodayPct!==null && (oiTodayPct-lastOiTodayPct)>1.2){ beep(990); }
-      if(statusWord==='HIGH RISK' || statusWord==='IMMINENT'){ beep(440,0.25); }
+      if(lastAnnFunding!==null && Math.sign(lastAnnFunding)!==Math.sign(annFunding) && Math.sign(annFunding)!==0) beep(660);
+      if(lastOiTodayPct!==null && (oiTodayPct-lastOiTodayPct)>1.2) beep(990);
+      if(statusWord==='HIGH RISK'||statusWord==='IMMINENT') beep(440,0.25);
     }
-    lastAnnFunding = annFunding; lastOiTodayPct = oiTodayPct;
+    lastAnnFunding=annFunding; lastOiTodayPct=oiTodayPct;
+
+    // ===== LEARNING MODE =====
+    if(divergenceActive && direction!=='neutral'){
+      logPrediction(direction==='long' ? 'Long trap likely' : 'Short trap likely', direction==='long'?'down':'up', live.markPrice);
+    } else if(energy>80){
+      logPrediction('Volatility expansion likely', 'expansion', live.markPrice);
+    }
+    resolvePredictions(live.markPrice);
+    renderLearning();
   }
 
   function renderZones(price){
-    const leverages=[10,20,25];
-    const list = $('zonesList'); list.innerHTML='';
-    let aboveSum=0, belowSum=0; let maxZone={intensity:-1};
-    const zones=[];
-    leverages.forEach(lev=>{
-      zones.push({p:price*(1-1/lev), type:'long', lev});
-      zones.push({p:price*(1+1/lev), type:'short', lev});
-    });
-    zones.forEach(z=>{
-      const distPct = Math.abs((z.p-price)/price)*100;
-      const intensity = Math.max(8, 100-distPct*12);
-      z.intensity=intensity;
-      if(z.type==='long') belowSum+=intensity; else aboveSum+=intensity;
-      if(intensity>maxZone.intensity) maxZone=z;
-    });
-    const total = aboveSum+belowSum;
-    const abovePct = Math.round((aboveSum/total)*100), belowPct=100-abovePct;
+    const leverages=[10,20,25]; const list=$('zonesList'); list.innerHTML='';
+    let aboveSum=0, belowSum=0; let maxZone={intensity:-1}; const zones=[];
+    leverages.forEach(lev=>{ zones.push({p:price*(1-1/lev), type:'long', lev}); zones.push({p:price*(1+1/lev), type:'short', lev}); });
+    zones.forEach(z=>{ const distPct=Math.abs((z.p-price)/price)*100; const intensity=Math.max(8,100-distPct*12); z.intensity=intensity;
+      if(z.type==='long') belowSum+=intensity; else aboveSum+=intensity; if(intensity>maxZone.intensity) maxZone=z; });
+    const total=aboveSum+belowSum; const abovePct=Math.round((aboveSum/total)*100), belowPct=100-abovePct;
     $('liqAbove').style.width=abovePct+'%'; $('liqAbovePct').textContent=abovePct+'%';
     $('liqBelow').style.width=belowPct+'%'; $('liqBelowPct').textContent=belowPct+'%';
     $('liqMagnet').textContent = fmtGbp(maxZone.p*gbpRate);
-
-    zones.sort((a,b)=>a.p-b.p).forEach(z=>{
-      const distPct = Math.abs((z.p-price)/price)*100;
-      const color = z.type==='long'?'var(--amber)':'var(--green)';
-      const row = document.createElement('div'); row.className='zone-row';
-      row.innerHTML = `<div class="zone-price">${fmtGbp(z.p*gbpRate)}</div>
-        <div class="zone-bar-track"><div class="zone-bar-fill" style="width:${z.intensity}%; background:${color};"></div></div>
-        <div class="zone-dist">${distPct.toFixed(1)}% · ${z.lev}x</div>`;
-      list.appendChild(row);
-    });
+    zones.sort((a,b)=>a.p-b.p).forEach(z=>{ const distPct=Math.abs((z.p-price)/price)*100; const color=z.type==='long'?'var(--amber)':'var(--green)';
+      const row=document.createElement('div'); row.className='zone-row';
+      row.innerHTML = `<div class="zone-price">${fmtGbp(z.p*gbpRate)}</div><div class="zone-bar-track"><div class="zone-bar-fill" style="width:${z.intensity}%; background:${color};"></div></div><div class="zone-dist">${distPct.toFixed(1)}% · ${z.lev}x</div>`;
+      list.appendChild(row); });
+    return {abovePct, belowPct, magnet:maxZone.p};
   }
 
   function renderHistorical(currentFundingRate, oiTodayPct){
     if(fundingHistAll.length<10 || oiDailyHist.length<10 || dailyKlines.length<10){
       $('histPattern').textContent='Building...'; $('histDate').textContent='--'; $('histResult').textContent='--'; $('histConf').textContent='--';
-      return;
+      return {nextReturn:0, similarity:0};
     }
-    // build daily signatures for past days (exclude today, need next-day close to exist)
-    const sortedOi = [...oiDailyHist].sort((a,b)=>a.t-b.t);
-    const sortedKlines = [...dailyKlines].sort((a,b)=>a.t-b.t);
-    const dayMs=86400000;
+    const sortedOi=[...oiDailyHist].sort((a,b)=>a.t-b.t); const sortedKlines=[...dailyKlines].sort((a,b)=>a.t-b.t); const dayMs=86400000;
     const sigs=[];
     for(let i=1;i<sortedOi.length-1;i++){
-      const dayStart = sortedOi[i].t;
-      const oiChangePct = ((sortedOi[i].oi-sortedOi[i-1].oi)/sortedOi[i-1].oi)*100;
+      const dayStart=sortedOi[i].t; const oiChangePct=((sortedOi[i].oi-sortedOi[i-1].oi)/sortedOi[i-1].oi)*100;
       const fundsInDay = fundingHistAll.filter(f=>f.t>=dayStart && f.t<dayStart+dayMs);
       if(fundsInDay.length===0) continue;
       const fundAvg = fundsInDay.reduce((s,f)=>s+f.rate,0)/fundsInDay.length;
-      // find matching kline for next day's return
       const kIdx = sortedKlines.findIndex(k=>Math.abs(k.t-dayStart)<dayMs);
       if(kIdx===-1 || kIdx+1>=sortedKlines.length) continue;
-      const nextReturn = ((sortedKlines[kIdx+1].close-sortedKlines[kIdx].close)/sortedKlines[kIdx].close)*100;
+      const nextReturn=((sortedKlines[kIdx+1].close-sortedKlines[kIdx].close)/sortedKlines[kIdx].close)*100;
       sigs.push({date:new Date(dayStart).toISOString().slice(0,10), fundAvg, oiChangePct, nextReturn});
     }
-    if(sigs.length<5){ $('histPattern').textContent='Insufficient history'; return; }
-
-    const fundVals = sigs.map(s=>s.fundAvg), oiVals = sigs.map(s=>s.oiChangePct);
-    const fundStd = Math.sqrt(fundVals.reduce((s,v)=>s+v*v,0)/fundVals.length) || 1e-9;
-    const oiStd = Math.sqrt(oiVals.reduce((s,v)=>s+v*v,0)/oiVals.length) || 1e-9;
-
+    if(sigs.length<5){ $('histPattern').textContent='Insufficient history'; return {nextReturn:0, similarity:0}; }
+    const fundVals=sigs.map(s=>s.fundAvg), oiVals=sigs.map(s=>s.oiChangePct);
+    const fundStd=stdev(fundVals)||1e-9, oiStd=stdev(oiVals)||1e-9;
     let best=null, bestDist=Infinity;
-    sigs.forEach(s=>{
-      const d = Math.sqrt(Math.pow((s.fundAvg-currentFundingRate)/fundStd,2) + Math.pow((s.oiChangePct-oiTodayPct)/oiStd,2));
-      if(d<bestDist){ bestDist=d; best=s; }
-    });
-
+    sigs.forEach(s=>{ const d=Math.sqrt(Math.pow((s.fundAvg-currentFundingRate)/fundStd,2)+Math.pow((s.oiChangePct-oiTodayPct)/oiStd,2)); if(d<bestDist){ bestDist=d; best=s; } });
     const patternLabel = `${currentFundingRate>0?'Long':'Short'}-skew, OI ${oiTodayPct>=0?'+':''}${oiTodayPct.toFixed(1)}%`;
-    $('histPattern').textContent = patternLabel;
-    $('histDate').textContent = best.date;
-    $('histResult').textContent = (best.nextReturn>=0?'+':'')+best.nextReturn.toFixed(2)+'% next day';
+    $('histPattern').textContent=patternLabel; $('histDate').textContent=best.date;
+    $('histResult').textContent=(best.nextReturn>=0?'+':'')+best.nextReturn.toFixed(2)+'% next day';
     $('histResult').style.color = best.nextReturn>=0?'var(--green)':'var(--red)';
     const similarity = Math.max(5, Math.round(100/(1+bestDist)));
     $('histConf').textContent = similarity+'% (rough match)';
+    return {nextReturn:best.nextReturn, similarity};
   }
 
   // ---------- UI WIRING ----------
   $('btnFull').addEventListener('click', ()=>{ $('btnFull').classList.add('active'); $('btnJon').classList.remove('active'); $('fullView').style.display='block'; $('jonView').style.display='none'; });
   $('btnJon').addEventListener('click', ()=>{ $('btnJon').classList.add('active'); $('btnFull').classList.remove('active'); $('jonView').style.display='block'; $('fullView').style.display='none'; });
-  $('btnAlerts').addEventListener('click', ()=>{
-    alertsOn = !alertsOn;
-    $('btnAlerts').classList.toggle('on', alertsOn);
-    $('btnAlerts').textContent = alertsOn ? '🔔 ALERTS ON' : '🔔 ALERTS OFF';
-    if(alertsOn) beep(880,0.08);
-  });
-  document.body.addEventListener('click', (e)=>{
-    if(e.target.classList.contains('info-icon')){
-      const tip = e.target.nextElementSibling;
-      tip.textContent = e.target.getAttribute('data-tip');
-      tip.classList.toggle('show');
-    }
-  });
+  $('btnAlerts').addEventListener('click', ()=>{ alertsOn=!alertsOn; $('btnAlerts').classList.toggle('on', alertsOn); $('btnAlerts').textContent = alertsOn?'🔔 ALERTS ON':'🔔 ALERTS OFF'; if(alertsOn) beep(880,0.08); });
+  document.body.addEventListener('click', (e)=>{ if(e.target.classList.contains('info-icon')){ const tip=e.target.nextElementSibling; tip.textContent=e.target.getAttribute('data-tip'); tip.classList.toggle('show'); } });
 
-  // ---------- BOOT ----------
   (async function boot(){
-    await fetchGbpRate();
-    await fetchHistorical();
-    await tick();
-    setInterval(tick, 15000);
-    setInterval(fetchGbpRate, 5*60*1000);
-    setInterval(fetchHistorical, 10*60*1000);
+    await fetchGbpRate(); await fetchHistorical(); await tick();
+    setInterval(tick, 15000); setInterval(fetchGbpRate, 5*60*1000); setInterval(fetchHistorical, 10*60*1000);
   })();
 })();
 </script>
