@@ -9,10 +9,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#05080a; --panel:#0c1316cc; --panel-2:#0f1a1d; --line:#16242a;
-    --text:#dff7f2; --dim:#5d8580;
-    --blue:#2f80ff; --orange:#ff8c2b; --red:#ff3b3b; --purple:#b07cff; --teal:#00e5d4;
-    --state:#2f80ff;
+    --bg:#020405; --panel:#0c1316cc; --panel-2:#0f1a1d; --line:#16242a;
+    --text:#eafffa; --dim:#638b86;
+    --blue:#2f6dff; --orange:#ff7a18; --red:#ff1f4b; --purple:#c050ff; --teal:#00ffd9;
+    --state:#2f6dff;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html,body{background:var(--bg); color:var(--text); font-family:'Share Tech Mono', monospace; overflow-x:hidden; min-height:100vh;}
@@ -27,10 +27,10 @@
     background:repeating-linear-gradient(0deg, rgba(0,229,212,0.015) 0px, rgba(0,229,212,0.015) 1px, transparent 1px, transparent 3px);}
 
   header{display:flex; justify-content:space-between; align-items:center; padding:6px 2px 10px;}
-  .titleblock h1{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:16px; letter-spacing:2px; color:var(--text);}
+  .titleblock h1{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:19px; letter-spacing:2.5px; color:var(--text); text-shadow:0 0 16px var(--state);}
   .titleblock .sub{font-size:9px; color:var(--dim); letter-spacing:1.5px; margin-top:2px;}
   .price{text-align:right;}
-  .price .gbp{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:17px; color:var(--state); transition:color 1.2s ease;}
+  .price .gbp{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:21px; color:var(--state); text-shadow:0 0 14px var(--state); transition:color 1.2s ease, text-shadow 1.2s ease;}
   .price .fund-timer{font-size:9px; color:var(--dim); margin-top:2px;}
 
   .modetoggle{display:flex; gap:6px; margin:6px 0 14px; justify-content:flex-end; flex-wrap:wrap;}
@@ -40,24 +40,37 @@
   .modetoggle button.active{border-color:var(--state); color:var(--state);}
   .modetoggle button.on{border-color:var(--orange); color:var(--orange);}
 
+  /* ===== AMBIENT BLOOM (new) ===== */
+  #ambientGlow{position:fixed; top:-25%; left:50%; transform:translateX(-50%); width:min(900px,160vw); height:min(900px,160vw);
+    border-radius:50%; background:radial-gradient(circle, var(--state) 0%, transparent 62%); filter:blur(70px);
+    opacity:0.3; z-index:0; transition:background 1.2s ease, opacity 1.2s ease; animation:ambientbreathe 6s ease-in-out infinite;}
+  @keyframes ambientbreathe{0%,100%{opacity:0.22;} 50%{opacity:0.42;}}
+
   /* ===== HERO: PRESSURE CORE ===== */
-  .hero{text-align:center; padding:20px 10px 10px; position:relative;}
-  .core-stage{position:relative; width:180px; height:180px; margin:0 auto 8px;}
-  .core-ring{position:absolute; inset:0; border-radius:50%; border:1px solid var(--state); opacity:0.35;}
-  .core-ring.r2{inset:18px; opacity:0.5;}
-  .core-ring.r3{inset:36px; opacity:0.7;}
-  .core-glow{position:absolute; inset:46px; border-radius:50%; background:radial-gradient(circle, var(--state) 0%, transparent 75%);
-    filter:blur(4px); animation:corepulse 3.4s ease-in-out infinite;}
-  .core-center{position:absolute; inset:62px; border-radius:50%; background:var(--state); box-shadow:0 0 30px var(--state);
+  .hero{text-align:center; padding:24px 10px 10px; position:relative;}
+  .core-stage{position:relative; width:clamp(220px,68vw,300px); height:clamp(220px,68vw,300px); margin:0 auto 12px;}
+  .core-ring{position:absolute; inset:0; border-radius:50%; border:1px solid var(--state); opacity:0.3;}
+  .core-ring.r2{inset:22px; opacity:0.45;}
+  .core-ring.r3{inset:44px; opacity:0.65;}
+  .core-spin{position:absolute; inset:-6px; border-radius:50%; border:2px dashed var(--state); opacity:0.55; animation:spin360 16s linear infinite;}
+  @keyframes spin360{to{transform:rotate(360deg);}}
+  .ping{position:absolute; inset:54px; border-radius:50%; border:2px solid var(--state); opacity:0; animation:pingexpand 3s ease-out infinite;}
+  .ping.p2{animation-delay:1s;} .ping.p3{animation-delay:2s;}
+  @keyframes pingexpand{0%{transform:scale(0.7); opacity:0.9;} 100%{transform:scale(2.1); opacity:0;}}
+  .core-glow{position:absolute; inset:50px; border-radius:50%; background:radial-gradient(circle, var(--state) 0%, transparent 75%);
+    filter:blur(10px); animation:corepulse 3.4s ease-in-out infinite;}
+  .core-center{position:absolute; inset:74px; border-radius:50%; background:var(--state);
+    box-shadow:0 0 40px var(--state), 0 0 90px var(--state), 0 0 160px color-mix(in srgb, var(--state) 55%, transparent);
     display:flex; align-items:center; justify-content:center; animation:corepulse 3.4s ease-in-out infinite;}
-  .core-center span{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:26px; color:#05080a;}
-  @keyframes corepulse{0%,100%{transform:scale(1); opacity:0.9;} 50%{transform:scale(1.08); opacity:1;}}
-  .spark{position:absolute; width:3px; height:3px; background:#fff; border-radius:50%; opacity:0; box-shadow:0 0 6px #fff;}
+  .core-center span{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:clamp(36px,11vw,52px); color:#020405;}
+  @keyframes corepulse{0%,100%{transform:scale(1); opacity:0.92;} 50%{transform:scale(1.13); opacity:1;}}
+  .spark{position:absolute; width:3px; height:3px; background:#fff; border-radius:50%; opacity:0; box-shadow:0 0 8px #fff;}
   .core-stage.extreme .spark{animation:flicker 0.6s ease-in-out infinite;}
   @keyframes flicker{0%,80%,100%{opacity:0;} 90%{opacity:1;}}
 
-  .status-word{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:13px; letter-spacing:2px; color:var(--state); margin-top:4px;}
-  .pressure-meta{font-size:10px; color:var(--dim); margin-top:2px;}
+  .status-word{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:24px; letter-spacing:3px; color:var(--state);
+    text-shadow:0 0 16px var(--state), 0 0 36px color-mix(in srgb, var(--state) 60%, transparent); margin-top:6px;}
+  .pressure-meta{font-size:10px; color:var(--dim); margin-top:4px;}
 
   .hidden-story{max-width:520px; margin:14px auto 0; font-size:13px; line-height:1.7; color:var(--text); padding:14px 16px;
     border-left:2px solid var(--state); background:linear-gradient(90deg, color-mix(in srgb, var(--state) 8%, transparent), transparent); text-align:left;}
@@ -69,10 +82,10 @@
   .crowd.long{background:linear-gradient(90deg, transparent, rgba(255,140,43,0.12));}
   .crowd.short{background:linear-gradient(270deg, transparent, rgba(0,229,212,0.12));}
   .crowd-label{font-family:'Rajdhani',sans-serif; font-size:10px; letter-spacing:1px; color:var(--dim);}
-  .crowd-pct{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:22px;}
-  .price-marker{width:64px; height:64px; border-radius:50%; background:var(--panel-2); border:2px solid var(--state); display:flex; flex-direction:column;
-    align-items:center; justify-content:center; flex-shrink:0; z-index:2; box-shadow:0 0 16px color-mix(in srgb, var(--state) 50%, transparent);}
-  .price-marker .pm-price{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:11px; color:var(--text);}
+  .crowd-pct{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:28px;}
+  .price-marker{width:84px; height:84px; border-radius:50%; background:var(--panel-2); border:2px solid var(--state); display:flex; flex-direction:column;
+    align-items:center; justify-content:center; flex-shrink:0; z-index:2; box-shadow:0 0 28px color-mix(in srgb, var(--state) 65%, transparent), 0 0 60px color-mix(in srgb, var(--state) 30%, transparent);}
+  .price-marker .pm-price{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:13px; color:var(--text);}
   .price-marker .pm-label{font-size:7px; color:var(--dim); letter-spacing:1px;}
   .whale-pulse{position:absolute; top:0; left:50%; transform:translateX(-50%); width:8px; height:8px; border-radius:50%; background:var(--purple);
     box-shadow:0 0 10px var(--purple); animation:whalepulse 2.5s ease-in-out infinite;}
@@ -82,15 +95,15 @@
   /* ===== PERSONALITY CARDS ===== */
   .personas{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:8px;}
   @media(max-width:520px){ .personas{grid-template-columns:1fr;} }
-  .persona{background:var(--panel); backdrop-filter:blur(2px); border:1px solid var(--line); border-radius:6px; padding:12px 14px;}
+  .persona{background:var(--panel); backdrop-filter:blur(2px); border:1px solid var(--line); border-left:3px solid var(--line); border-radius:6px; padding:12px 14px; transition:.3s;}
   .persona-head{display:flex; align-items:center; gap:8px; margin-bottom:6px;}
-  .persona-dot{width:8px; height:8px; border-radius:50%; flex-shrink:0;}
-  .persona-name{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:12px; letter-spacing:1px;}
-  .persona-line{font-size:12px; line-height:1.5; color:var(--text);}
+  .persona-dot{width:9px; height:9px; border-radius:50%; flex-shrink:0; box-shadow:0 0 8px currentColor;}
+  .persona-name{font-family:'Rajdhani',sans-serif; font-weight:700; font-size:13px; letter-spacing:1.5px;}
+  .persona-line{font-size:13px; line-height:1.5; color:var(--text);}
   .persona-stat{font-size:9px; color:var(--dim); margin-top:5px; letter-spacing:.5px;}
 
-  .section{margin:20px 0 8px;}
-  .section-title{font-family:'Rajdhani',sans-serif; font-size:11px; letter-spacing:2.5px; color:var(--dim); font-weight:700; margin-bottom:10px;}
+  .section{margin:24px 0 8px;}
+  .section-title{font-family:'Rajdhani',sans-serif; font-size:12px; letter-spacing:3px; color:var(--dim); font-weight:700; margin-bottom:10px;}
 
   .why-list{display:flex; flex-direction:column; gap:6px;}
   .why-item{display:flex; align-items:center; gap:8px; font-size:12px; padding:6px 0;}
@@ -143,6 +156,7 @@
 </head>
 <body>
 
+<div id="ambientGlow"></div>
 <div id="particles"></div>
 
 <div class="loading-overlay" id="loadingOverlay">
@@ -187,6 +201,10 @@
       <div class="core-ring"></div>
       <div class="core-ring r2"></div>
       <div class="core-ring r3"></div>
+      <div class="core-spin"></div>
+      <div class="ping"></div>
+      <div class="ping p2"></div>
+      <div class="ping p3"></div>
       <div class="core-glow"></div>
       <div class="core-center"><span id="pressureNum">--</span></div>
     </div>
@@ -222,17 +240,17 @@
     <!-- PERSONALITIES -->
     <div class="section-title">WHO'S MOVING THE MARKET</div>
     <div class="personas">
-      <div class="persona"><div class="persona-head"><div class="persona-dot" style="background:var(--purple);"></div><div class="persona-name">WHALES</div></div>
+      <div class="persona" style="border-left-color:var(--purple); box-shadow:0 0 18px -8px var(--purple);"><div class="persona-head"><span style="font-size:16px;">🐋</span><div class="persona-name" style="color:var(--purple);">WHALES</div></div>
         <div class="persona-line" id="pWhales">Reading size...</div><div class="persona-stat" id="pWhalesStat">--</div></div>
-      <div class="persona"><div class="persona-head"><div class="persona-dot" style="background:var(--orange);"></div><div class="persona-name">RETAIL</div></div>
+      <div class="persona" style="border-left-color:var(--orange); box-shadow:0 0 18px -8px var(--orange);"><div class="persona-head"><span style="font-size:16px;">👥</span><div class="persona-name" style="color:var(--orange);">RETAIL</div></div>
         <div class="persona-line" id="pRetail">Reading crowd...</div><div class="persona-stat" id="pRetailStat">--</div></div>
-      <div class="persona"><div class="persona-head"><div class="persona-dot" style="background:var(--red);"></div><div class="persona-name">LEVERAGE</div></div>
+      <div class="persona" style="border-left-color:var(--red); box-shadow:0 0 18px -8px var(--red);"><div class="persona-head"><span style="font-size:16px;">⚡</span><div class="persona-name" style="color:var(--red);">LEVERAGE</div></div>
         <div class="persona-line" id="pLeverage">Reading exposure...</div><div class="persona-stat" id="pLeverageStat">--</div></div>
-      <div class="persona"><div class="persona-head"><div class="persona-dot" style="background:var(--teal);"></div><div class="persona-name">SPOT BUYERS</div></div>
+      <div class="persona" style="border-left-color:var(--teal); box-shadow:0 0 18px -8px var(--teal);"><div class="persona-head"><span style="font-size:16px;">💧</span><div class="persona-name" style="color:var(--teal);">SPOT BUYERS</div></div>
         <div class="persona-line" id="pSpot">Reading demand...</div><div class="persona-stat" id="pSpotStat">--</div></div>
-      <div class="persona"><div class="persona-head"><div class="persona-dot" style="background:var(--blue);"></div><div class="persona-name">MARKET MAKERS</div></div>
+      <div class="persona" style="border-left-color:var(--blue); box-shadow:0 0 18px -8px var(--blue);"><div class="persona-head"><span style="font-size:16px;">🏦</span><div class="persona-name" style="color:var(--blue);">MARKET MAKERS</div></div>
         <div class="persona-line" id="pMM">Reading flow...</div><div class="persona-stat" id="pMMStat">--</div></div>
-      <div class="persona"><div class="persona-head"><div class="persona-dot" style="background:var(--state);"></div><div class="persona-name">LIQUIDITY</div></div>
+      <div class="persona" style="border-left-color:var(--state); box-shadow:0 0 18px -8px var(--state);"><div class="persona-head"><span style="font-size:16px;">🌀</span><div class="persona-name" style="color:var(--state);">LIQUIDITY</div></div>
         <div class="persona-line" id="pLiq">Reading gravity...</div><div class="persona-stat" id="pLiqStat">--</div></div>
     </div>
 
@@ -406,6 +424,26 @@
 
   function setStateColor(hex){ document.documentElement.style.setProperty('--state', hex); }
 
+  let displayedPressure = 0;
+  function tweenPressure(target){
+    const start = displayedPressure; const startTime = performance.now(); const dur = 700;
+    function step(now){
+      const t = Math.min(1, (now-startTime)/dur);
+      const eased = 1 - Math.pow(1-t, 3);
+      const val = Math.round(start + (target-start)*eased);
+      $('pressureNum').textContent = val;
+      if(t<1) requestAnimationFrame(step); else displayedPressure = target;
+    }
+    requestAnimationFrame(step);
+  }
+
+  function applyAmbient(pressure){
+    const glow = $('ambientGlow');
+    glow.style.opacity = Math.min(0.6, 0.22 + pressure/180);
+    glow.style.animationDuration = (6 - Math.min(4, pressure/28)) + 's';
+    document.querySelectorAll('.ping').forEach(p=> p.style.animationDuration = (3.2 - Math.min(2.2, pressure/45)) + 's');
+  }
+
   function renderTimeline(){
     const svg=$('timelineSvg'); const w=300,h=70; const pts=timelineHist.slice(-60);
     if(pts.length<2){ svg.innerHTML=''; return; }
@@ -515,7 +553,8 @@
       : getComputedStyle(document.documentElement).getPropertyValue('--blue').trim();
     setStateColor(heroColor);
 
-    $('pressureNum').textContent = pressure;
+    tweenPressure(pressure);
+    applyAmbient(pressure);
     $('statusWord').textContent = statusWord;
     $('pressureMeta').textContent = `confidence ${conf}% · ${direction==='neutral'?'no clear side':direction+'s under more strain'}`;
     const stage=$('coreStage'); stage.classList.toggle('extreme', pressure>85);
